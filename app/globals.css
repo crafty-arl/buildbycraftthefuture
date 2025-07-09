@@ -1,0 +1,581 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --build-accent: #f97316;
+  --build-accent-light: #fb923c;
+  --build-accent-dark: #ea580c;
+  --build-pink: #ec4899;
+  --build-pink-neon: #ff006e;
+  --build-green: #10b981;
+  --build-tan: #d4bfa0;
+  --build-bg: #ffffff;
+  --build-surface: #fdfcfa;
+  --build-border: #e5e7eb;
+  --build-text: #374151;
+  --build-muted: #6b7280;
+}
+
+body {
+  color: var(--build-text);
+  background: var(--build-bg);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Clean terminal aesthetic */
+.terminal-prompt::before {
+  content: "▊ ";
+  color: var(--build-accent);
+  font-family: var(--font-mono);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Build-themed content styling */
+.lesson-content {
+  @apply text-build-text leading-relaxed;
+}
+
+.lesson-content h1 {
+  @apply text-3xl font-bold mb-6 text-build-text;
+}
+
+.lesson-content h2 {
+  @apply text-2xl font-semibold mb-4 text-build-text;
+}
+
+.lesson-content h3 {
+  @apply text-xl font-semibold mb-3 text-build-muted;
+}
+
+.lesson-content p {
+  @apply mb-4 leading-relaxed;
+}
+
+.lesson-content ul {
+  @apply mb-4 space-y-2;
+}
+
+.lesson-content li {
+  @apply ml-6 list-disc;
+}
+
+.lesson-content code {
+  @apply bg-tan-100 px-2 py-1 rounded text-sm font-mono text-build-text border border-tan-200;
+}
+
+.lesson-content pre {
+  @apply bg-tan-50 text-build-text p-4 rounded-lg mb-4 overflow-x-auto font-mono text-sm border border-tan-200;
+}
+
+/* Minimalist components with orange/pink accents */
+.btn-primary {
+  @apply bg-build-accent hover:bg-build-accent-dark text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 shadow-sm hover:shadow;
+}
+
+.btn-secondary {
+  @apply bg-build-surface hover:bg-tan-100 text-build-text font-medium py-3 px-6 rounded-lg transition-colors border border-build-border;
+}
+
+.btn-minimal {
+  @apply bg-transparent border border-build-accent text-build-accent hover:bg-build-accent hover:text-white font-medium py-3 px-6 rounded-lg transition-all duration-200;
+}
+
+.btn-pink {
+  @apply bg-transparent border border-build-pink-neon text-build-pink-neon hover:bg-build-pink-neon hover:text-white font-medium py-3 px-6 rounded-lg transition-all duration-200;
+}
+
+.card {
+  @apply bg-build-surface rounded-lg border border-build-border hover:border-tan-300 transition-all duration-200 shadow-sm hover:shadow;
+}
+
+.card-accent {
+  @apply bg-build-surface rounded-lg border border-build-border hover:border-build-accent/50 transition-all duration-200 shadow-sm hover:shadow hover:shadow-build-accent/20;
+}
+
+.card-pink {
+  @apply bg-build-surface rounded-lg border border-build-border hover:border-build-pink/50 transition-all duration-200 shadow-sm hover:shadow hover:shadow-build-pink/20;
+}
+
+.code-block {
+  @apply bg-tan-50 text-build-text p-4 rounded-lg overflow-x-auto font-mono text-sm border border-tan-200;
+}
+
+/* Orange/Pink hover effects */
+.minimal-hover {
+  @apply transition-all duration-200 hover:shadow-md hover:-translate-y-1;
+}
+
+.accent-hover {
+  @apply transition-all duration-200 hover:shadow-md hover:-translate-y-1 hover:shadow-build-accent/20;
+}
+
+.pink-hover {
+  @apply transition-all duration-200 hover:shadow-md hover:-translate-y-1 hover:shadow-build-pink/20;
+}
+
+/* Interactive Elements */
+.code-editor {
+  @apply w-full h-32 p-4 bg-tan-50 text-build-text font-mono text-sm resize-none outline-none border border-tan-200 focus:border-build-accent transition-colors rounded-lg;
+}
+
+.output-panel {
+  @apply bg-build-surface p-3 rounded-lg border border-build-border min-h-[60px] font-mono text-sm text-build-text;
+}
+
+/* Clean grid pattern */
+.build-grid {
+  background-image: 
+    linear-gradient(rgba(229, 231, 235, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(229, 231, 235, 0.3) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Pink accent grid pattern */
+.build-grid-pink {
+  background-image: 
+    linear-gradient(rgba(255, 0, 110, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 110, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Simple animations */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.typing-cursor::after {
+  content: "_";
+  animation: blink 1s infinite;
+  color: var(--build-accent);
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Pink glow effect */
+.pink-glow {
+  box-shadow: 0 0 10px var(--build-pink-neon), 0 0 20px var(--build-pink-neon), 0 0 30px var(--build-pink-neon);
+}
+
+/* Orange glow effect */
+.orange-glow {
+  box-shadow: 0 0 10px var(--build-accent), 0 0 20px var(--build-accent);
+}
+
+/* Focus States for Accessibility */
+.focus-ring:focus {
+  @apply outline-none ring-2 ring-build-accent ring-offset-2 ring-offset-build-bg;
+}
+
+/* Loading State */
+.loading {
+  @apply animate-pulse;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .container-responsive {
+    @apply px-4;
+  }
+  
+  .text-responsive {
+    @apply text-2xl;
+  }
+}
+
+/* Enhanced Responsive Design */
+@layer utilities {
+  /* Mobile-first responsive text sizing */
+  .text-hero {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
+  }
+  
+  .text-section {
+    @apply text-xl sm:text-2xl md:text-3xl;
+  }
+  
+  .text-card {
+    @apply text-lg sm:text-xl;
+  }
+  
+  /* Responsive spacing */
+  .section-padding {
+    @apply py-12 sm:py-16 md:py-20;
+  }
+  
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Mobile-friendly buttons */
+  .btn-mobile {
+    @apply py-3 px-4 sm:py-3 sm:px-6 text-sm sm:text-base;
+    min-height: 44px; /* iOS touch target minimum */
+  }
+  
+  /* Responsive grids */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8;
+  }
+  
+  .grid-modules {
+    @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6;
+  }
+  
+  /* Mobile navigation */
+  .nav-mobile {
+    @apply flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-6;
+  }
+  
+  /* Responsive IDE layout */
+  .ide-layout {
+    @apply flex flex-col lg:flex-row;
+  }
+  
+  .ide-sidebar {
+    @apply w-full lg:w-80 border-b lg:border-b-0 lg:border-r border-build-border;
+    max-height: 40vh;
+    @apply lg:max-h-full;
+  }
+  
+  .ide-main {
+    @apply flex-1 flex flex-col;
+  }
+  
+  .ide-content {
+    @apply flex flex-col lg:flex-row;
+    min-height: 0; /* Allow flexbox children to shrink */
+  }
+  
+  .ide-lesson {
+    @apply w-full lg:w-1/2 border-b lg:border-b-0 lg:border-r border-build-border;
+    min-height: 30vh;
+    @apply lg:min-h-0;
+  }
+  
+  .ide-editor {
+    @apply w-full lg:w-1/2 flex flex-col;
+    min-height: 50vh;
+    @apply lg:min-h-0;
+  }
+  
+  /* Touch-friendly sizing */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    @apply flex items-center justify-center;
+  }
+  
+  /* Mobile modal adjustments */
+  .modal-mobile {
+    @apply mx-2 sm:mx-4 my-4 sm:my-8 max-h-[95vh] sm:max-h-[90vh];
+  }
+  
+  /* Responsive code editor */
+  .code-editor-mobile {
+    @apply min-h-[250px] sm:min-h-[350px] lg:min-h-[400px];
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .output-panel-mobile {
+    @apply h-40 sm:h-48 lg:h-56;
+    max-height: 40vh;
+  }
+  
+  /* Responsive sidebar content */
+  .sidebar-mobile {
+    @apply overflow-y-auto;
+    max-height: calc(100vh - 200px);
+  }
+  
+  /* Better mobile header */
+  .ide-header-mobile {
+    @apply flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0;
+  }
+  
+  /* Responsive code editor toolbar */
+  .code-toolbar-mobile {
+    @apply flex flex-wrap items-center gap-1 sm:gap-2;
+  }
+  
+  /* Mobile-optimized input field */
+  .input-mobile {
+    @apply w-full sm:w-auto min-w-0 flex-1;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Responsive terminal output */
+  .terminal-output-mobile {
+    @apply text-xs sm:text-sm;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Mobile slide navigation */
+  .slide-nav-mobile {
+    @apply flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-0 sm:space-x-4;
+  }
+  
+  /* Responsive lesson content */
+  .lesson-content-mobile {
+    @apply p-3 sm:p-4 lg:p-6;
+    max-height: calc(100vh - 300px);
+    @apply overflow-y-auto;
+  }
+  
+  /* Text utilities for better mobile display */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+  
+  /* Responsive flex utilities */
+  .flex-col-mobile {
+    @apply flex flex-col sm:flex-row;
+  }
+  
+  .flex-row-mobile {
+    @apply flex flex-row sm:flex-col;
+  }
+  
+  /* Responsive spacing utilities */
+  .space-mobile {
+    @apply space-y-2 sm:space-y-0 sm:space-x-4;
+  }
+  
+  /* Better mobile scrolling */
+  .scroll-smooth-mobile {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Mobile-friendly focus states */
+  .focus-mobile:focus {
+    @apply outline-none ring-2 ring-build-accent ring-offset-1;
+  }
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  /* Improve touch interactions */
+  .btn-primary, .btn-secondary, .btn-minimal, .btn-pink {
+    @apply py-3 px-4 text-base;
+    min-height: 44px;
+  }
+  
+  /* Better mobile typography */
+  .lesson-content h1 {
+    @apply text-2xl;
+  }
+  
+  .lesson-content h2 {
+    @apply text-xl;
+  }
+  
+  .lesson-content h3 {
+    @apply text-lg;
+  }
+  
+  /* Mobile-friendly code blocks */
+  .lesson-content pre {
+    @apply text-xs overflow-x-auto;
+  }
+  
+  .code-editor {
+    @apply text-sm;
+    min-height: 200px;
+  }
+  
+  /* Adjust spacing for mobile */
+  .card, .card-accent, .card-pink {
+    @apply p-4;
+  }
+  
+  /* Mobile IDE optimizations */
+  .ide-layout {
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile */
+  }
+  
+  .ide-sidebar {
+    max-height: 35vh;
+  }
+  
+  .ide-content {
+    min-height: 0;
+  }
+  
+  .ide-lesson {
+    min-height: 25vh;
+    max-height: 45vh;
+  }
+  
+  .ide-editor {
+    min-height: 40vh;
+  }
+  
+  .code-editor-mobile {
+    min-height: 200px;
+    font-size: 14px;
+  }
+  
+  .output-panel-mobile {
+    min-height: 150px;
+    max-height: 35vh;
+  }
+  
+  /* Better mobile text wrapping */
+  .terminal-output-mobile {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  
+  /* Mobile header optimizations */
+  .ide-header-mobile {
+    gap: 8px;
+  }
+  
+  /* Better touch targets on mobile */
+  .touch-target {
+    min-height: 48px; /* Larger touch targets on mobile */
+    min-width: 48px;
+  }
+  
+  /* Mobile slide navigation */
+  .slide-nav-mobile {
+    gap: 8px;
+  }
+  
+  .slide-nav-mobile button {
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .ide-sidebar {
+    max-height: 30vh;
+  }
+  
+  .ide-lesson {
+    min-height: 20vh;
+    max-height: 35vh;
+  }
+  
+  .ide-editor {
+    min-height: 35vh;
+  }
+  
+  .code-editor-mobile {
+    min-height: 180px;
+    font-size: 13px;
+  }
+  
+  .output-panel-mobile {
+    min-height: 120px;
+    max-height: 30vh;
+  }
+  
+  .terminal-output-mobile {
+    font-size: 11px;
+  }
+  
+  /* Tighter spacing for very small screens */
+  .lesson-content-mobile {
+    @apply p-2;
+  }
+  
+  .sidebar-mobile {
+    @apply p-2;
+  }
+  
+  /* Smaller text on tiny screens */
+  .text-hero {
+    @apply text-2xl;
+  }
+  
+  .text-section {
+    @apply text-lg;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .ide-content {
+    @apply flex-col;
+  }
+  
+  .ide-lesson, .ide-editor {
+    @apply w-full;
+  }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1280px) {
+  .container-max {
+    @apply max-w-7xl mx-auto;
+  }
+}
+
+/* High DPI screen optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .orange-glow, .pink-glow {
+    box-shadow: 0 0 5px var(--build-accent), 0 0 10px var(--build-accent);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .btn-primary, .btn-secondary, .btn-minimal, .btn-pink {
+    @apply border border-gray-400 bg-transparent text-black;
+  }
+} 
