@@ -43,6 +43,18 @@ module.exports = {
           'accent-dark': '#ea580c',
           pink: '#ec4899',
           'pink-neon': '#ff006e',
+        },
+        // Python universe colors - extending /build theme
+        python: {
+          blue: '#3776ab',
+          yellow: '#ffd43b',
+        },
+        data: {
+          purple: '#6366f1',
+          orange: '#f59e0b',
+        },
+        ai: {
+          teal: '#06b6d4',
         }
       },
       fontFamily: {

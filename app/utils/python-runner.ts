@@ -11,6 +11,7 @@ declare global {
 
 let pyodideInstance: any = null
 let isInitializing = false
+let pendingInput: { resolve: (value: string) => void, prompt: string } | null = null
 
 async function loadPyodideScript(): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -59,13 +60,23 @@ export async function initializePyodide(): Promise<any> {
       indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/',
     })
 
-    // Set up stdout/stderr capture and execution environment
+    // Pre-load essential data science packages for Python learning path
+    try {
+      await pyodideInstance.loadPackage(['numpy', 'pandas', 'matplotlib', 'scipy', 'scikit-learn'])
+      console.log('📊 Data science packages loaded successfully')
+    } catch (error) {
+      console.warn('⚠️ Some data science packages failed to load:', error)
+      // Continue without data science packages - basic Python will still work
+    }
+
+    // Set up stdout/stderr capture and natural input handling
     pyodideInstance.runPython(`
 import sys
 from io import StringIO
 import contextlib
 import traceback
 import builtins
+import asyncio
 
 # Create persistent IO objects
 _stdout_buffer = StringIO()
@@ -93,7 +104,7 @@ def safe_exec(code_str):
         exec_globals = dict(globals())
         exec_locals = {}
         
-        # Redirect stdout and stderr safely
+        # Redirect stdout and stderr safely - capture everything raw
         old_stdout = sys.stdout
         old_stderr = sys.stderr
         
@@ -109,71 +120,71 @@ def safe_exec(code_str):
         globals().update(exec_locals)
         return True, None
     except Exception as e:
-        # Capture error output safely
+        # Capture raw error output - no formatting
         old_stdout = sys.stdout
         old_stderr = sys.stderr
         
         try:
             sys.stdout = _stdout_buffer
             sys.stderr = _stderr_buffer
+            # Print the full traceback exactly as Python would
             traceback.print_exc()
         finally:
             sys.stdout = old_stdout
             sys.stderr = old_stderr
             
-        return False, str(e)
+        return False, None  # Don't return custom error message
 
-# Set up enhanced print function for better output
-original_print = builtins.print
-def enhanced_print(*args, **kwargs):
-    # Convert args to strings and handle special types
-    str_args = []
-    for arg in args:
-        if hasattr(arg, '__dict__') and hasattr(arg, '__class__'):
-            # For objects, show a meaningful representation
-            str_args.append(f"<{arg.__class__.__name__} object>")
-        else:
-            str_args.append(str(arg))
-    
-    # Call original print with processed args
-    original_print(*str_args, **kwargs)
-
-builtins.print = enhanced_print
-
-# Terminal-like input handling for browser environment
+# Natural input handling - like a real Python terminal
 original_input = builtins.input
-_input_queue = []
-_input_prompts = []
 _waiting_for_input = False
+_current_prompt = ""
+_input_value = None
+_paused_execution = None
 
-def terminal_input(prompt=""):
-    global _waiting_for_input
+def browser_input(prompt=""):
+    global _waiting_for_input, _current_prompt, _input_value
+    _current_prompt = prompt
+    _waiting_for_input = True
+    
+    # Print the prompt immediately
     if prompt:
         print(prompt, end="", flush=True)
     
-    _input_prompts.append(prompt)
-    _waiting_for_input = True
-    
-    # Return a placeholder that will be replaced
-    return "__WAITING_FOR_INPUT__"
+    # Throw a special exception that we can catch
+    raise InputRequiredException(prompt)
 
-builtins.input = terminal_input
+class InputRequiredException(Exception):
+    def __init__(self, prompt):
+        self.prompt = prompt
+        super().__init__(f"Input required: {prompt}")
 
-def set_input_responses(responses):
-    global _input_queue
-    _input_queue = responses[:]
-
-def get_input_prompts():
-    return _input_prompts[:]
+# Replace input function
+builtins.input = browser_input
 
 def is_waiting_for_input():
     return _waiting_for_input
 
-def clear_input_state():
-    global _input_queue, _input_prompts, _waiting_for_input
-    _input_queue = []
-    _input_prompts = []
+def get_current_prompt():
+    return _current_prompt
+
+def provide_input(user_input):
+    global _waiting_for_input, _input_value
     _waiting_for_input = False
+    _input_value = user_input
+    return user_input
+
+def get_provided_input():
+    global _input_value
+    result = _input_value
+    _input_value = None
+    return result
+
+def clear_input_state():
+    global _waiting_for_input, _current_prompt, _input_value
+    _waiting_for_input = False
+    _current_prompt = ""
+    _input_value = None
 `)
 
     // Load common packages silently in background
@@ -212,60 +223,177 @@ export async function runPythonCode(code: string): Promise<{
     // Clean and prepare the code
     const cleanCode = code.trim()
     if (!cleanCode) {
-      return { output: 'No code to execute.', error: null }
+      return { output: '', error: null }
+    }
+
+    console.log('🐍 Executing Python code:', cleanCode.substring(0, 100) + (cleanCode.length > 100 ? '...' : ''))
+    
+    // Check if pyodide instance is valid
+    if (!pyodide) {
+      console.error('❌ Pyodide instance is null')
+      return {
+        output: '',
+        error: 'Python environment not initialized'
+      }
+    }
+
+    // Test if basic Python functions are available
+    try {
+      const testResult = pyodide.runPython('1 + 1')
+      console.log('✅ Basic Python test successful:', testResult)
+    } catch (testError) {
+      console.error('❌ Basic Python test failed:', testError)
+      return {
+        output: '',
+        error: 'Python environment is not working properly'
+      }
+    }
+
+    // Clear previous input state safely
+    try {
+      pyodide.runPython(`clear_input_state()`)
+    } catch (clearError) {
+      console.warn('⚠️ Could not clear input state:', clearError)
     }
     
-    // Clear previous input state
-    pyodide.runPython(`clear_input_state()`)
+    // Store the user code in a Python variable to avoid escaping issues
+    try {
+      pyodide.globals.set('user_code', cleanCode)
+      console.log('✅ User code stored in Python globals')
+    } catch (setError) {
+      console.error('❌ Failed to set user code:', setError)
+      return {
+        output: '',
+        error: 'Failed to prepare code for execution'
+      }
+    }
     
-    // Execute the code safely
-    const result = pyodide.runPython(`
+    // Execute the code safely using the stored variable
+    try {
+      console.log('🚀 Executing Python code...')
+      const result = pyodide.runPython(`
 # Execute user code and capture result
-success, error_msg = safe_exec("""${cleanCode.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}""")
-stdout_content, stderr_content = get_output()
-waiting = is_waiting_for_input()
-prompts = get_input_prompts()
+def execute_and_return():
+    try:
+        success, error_msg = safe_exec(user_code)
+        stdout_content, stderr_content = get_output()
+        waiting = is_waiting_for_input()
+        current_prompt = get_current_prompt()
+        
+        # Return results as a tuple - this should always return something
+        result_tuple = (success, error_msg, stdout_content, stderr_content, waiting, current_prompt)
+        print(f"Debug: Result tuple created: {type(result_tuple)}, content: {result_tuple[:2]}")
+        return result_tuple
+    except InputRequiredException as e:
+        # Code is waiting for input
+        stdout_content, stderr_content = get_output()
+        result_tuple = (True, None, stdout_content, stderr_content, True, str(e.prompt))
+        print(f"Debug: Input required tuple: {type(result_tuple)}")
+        return result_tuple
+    except Exception as e:
+        # Any other error
+        print(f"Debug: Exception in Python execution: {e}")
+        import traceback
+        traceback.print_exc()
+        return ("ERROR", str(e), "", str(e), False, "")
 
-# Return results as a tuple
-(success, error_msg, stdout_content, stderr_content, waiting, prompts)
+# Call the function and return its result
+execute_and_return()
 `)
 
-    const [success, errorMsg, stdout, stderr, waitingForInput, prompts] = result.toJs()
+      console.log('✅ Python execution completed, result type:', typeof result)
+      console.log('✅ Python execution result:', result)
 
-    if (!success) {
+      // Check if result is valid before calling toJs()
+      if (result === undefined || result === null) {
+        console.error('❌ Python execution returned undefined/null')
+        return {
+          output: '',
+          error: 'Python execution returned no result - code may have syntax errors'
+        }
+      }
+
+      if (typeof result.toJs !== 'function') {
+        console.error('❌ Python result does not have toJs method, type:', typeof result)
+        console.error('❌ Python result value:', result)
+        return {
+          output: '',
+          error: 'Python execution result is not convertible to JavaScript'
+        }
+      }
+
+      const resultArray = result.toJs()
+      console.log('✅ Converted to JS array:', resultArray)
+
+      if (!Array.isArray(resultArray) || resultArray.length < 6) {
+        console.error('❌ Invalid result array:', resultArray)
+        return {
+          output: '',
+          error: 'Python execution returned invalid result format'
+        }
+      }
+
+      const [success, errorMsg, stdout, stderr, waitingForInput, prompt] = resultArray
+
+      // If there's stderr content, return it as error (raw Python error)
+      if (stderr && stderr.trim()) {
+        return {
+          output: stdout || '',
+          error: stderr.trim()
+        }
+      }
+
+      // Check if code is waiting for input
+      if (waitingForInput) {
+        return {
+          output: stdout || '',
+          error: null,
+          waitingForInput: true,
+          prompt: prompt || ''
+        }
+      }
+
+      // Return raw stdout content
       return {
         output: stdout || '',
-        error: errorMsg || stderr || 'Python execution error'
+        error: null
       }
-    }
-
-    if (stderr && stderr.trim()) {
+    } catch (executionError) {
+      console.error('❌ Python execution error:', executionError)
+      
+      // Try to get any output that was captured before the error
+      try {
+        const fallbackResult = pyodide.runPython(`
+try:
+    stdout_content, stderr_content = get_output()
+    waiting = is_waiting_for_input()
+    current_prompt = get_current_prompt()
+    (False, None, stdout_content, stderr_content, waiting, current_prompt)
+except:
+    (False, None, "", str(Exception("Execution failed")), False, "")
+`)
+        
+        if (fallbackResult && typeof fallbackResult.toJs === 'function') {
+          const [success, errorMsg, stdout, stderr, waitingForInput, prompt] = fallbackResult.toJs()
+          return {
+            output: stdout || '',
+            error: stderr || String(executionError)
+          }
+        }
+      } catch (fallbackError) {
+        console.error('❌ Fallback execution also failed:', fallbackError)
+      }
+      
       return {
-        output: stdout || '',
-        error: stderr
+        output: '',
+        error: `Execution error: ${executionError instanceof Error ? executionError.message : String(executionError)}`
       }
-    }
-
-    // Check if code is waiting for input
-    if (waitingForInput && prompts.length > 0) {
-      const currentPrompt = prompts[prompts.length - 1]
-      return {
-        output: stdout || '',
-        error: null,
-        waitingForInput: true,
-        prompt: currentPrompt
-      }
-    }
-
-    return {
-      output: stdout || '✅ Code executed successfully!',
-      error: null
     }
   } catch (error) {
-    console.error('❌ Python execution error:', error)
+    console.error('❌ System-level error in runPythonCode:', error)
     return {
       output: '',
-      error: error instanceof Error ? error.message : 'Unknown error occurred'
+      error: `System error: ${error instanceof Error ? error.message : String(error)}`
     }
   }
 }
@@ -279,36 +407,54 @@ export async function continueWithInput(userInput: string): Promise<{
   try {
     const pyodide = await initializePyodide()
     
-    // Continue execution with user input
+    // Store the input and modify the input function to return it
     const result = pyodide.runPython(`
-# Simulate user input by replacing placeholder and continuing
-import builtins
-import sys
+# Provide the user input
+provide_input("${userInput.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}")
 
-# Get current output and add user input
-stdout_content, stderr_content = get_output()
-print("${userInput.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}")
+# Create a new input function that will return the provided value once
+def continue_input(prompt=""):
+    global _input_value
+    if _input_value is not None:
+        result = _input_value
+        _input_value = None
+        return result
+    else:
+        # If no more input available, use the original behavior
+        return browser_input(prompt)
 
-# Reset input state and continue
-_waiting_for_input = False
+# Temporarily replace the input function
+old_input = builtins.input
+builtins.input = continue_input
 
-# Return the updated output
-stdout_content, stderr_content = get_output()
-(True, None, stdout_content, stderr_content, False, [])
+try:
+    # Re-execute the last code block that was waiting for input
+    # For now, just indicate that input was provided
+    stdout_content, stderr_content = get_output()
+    waiting = is_waiting_for_input()
+    current_prompt = get_current_prompt()
+    (True, None, stdout_content, stderr_content, waiting, current_prompt)
+finally:
+    # Restore original input handling
+    builtins.input = old_input
 `)
 
-    const [success, errorMsg, stdout, stderr] = result.toJs()
-
-    if (!success) {
+    // Check if result is valid before calling toJs()
+    if (!result || typeof result.toJs !== 'function') {
+      console.error('Invalid Python execution result in continueWithInput:', result)
       return {
-        output: stdout || '',
-        error: errorMsg || stderr || 'Execution error'
+        output: '',
+        error: 'Python execution failed - invalid result'
       }
     }
 
+    const [success, errorMsg, stdout, stderr, waitingForInput, prompt] = result.toJs()
+
     return {
       output: stdout || '',
-      error: null
+      error: stderr || null,
+      waitingForInput: waitingForInput || false,
+      prompt: prompt || undefined
     }
   } catch (error) {
     console.error('❌ Error continuing with input:', error)
@@ -354,6 +500,13 @@ for module_name in sys.modules:
         loaded_packages.append(module_name)
 sorted(list(set(loaded_packages)))
 `)
+    
+    // Check if result is valid before calling toJs()
+    if (!result || typeof result.toJs !== 'function') {
+      console.error('Invalid Python execution result in getLoadedPackages:', result)
+      return []
+    }
+    
     return result.toJs()
   } catch (error) {
     console.error('Failed to get loaded packages:', error)

@@ -30,7 +30,7 @@ build-platform/
 ├── app/                          # Next.js 14 App Router
 │   ├── components/
 │   │   ├── LessonViewer.tsx     # Module preview component
-│   │   └── PythonIDE.tsx        # Interactive code builder
+│   │   └── GamefiedPythonIDE.tsx # Main gamified IDE (Professional future builder studio)
 │   ├── learn/                   # 🔧 Builder Interface
 │   │   ├── page.tsx            # Main builder page
 │   │   └── [lessonId]/page.tsx # Individual module builder

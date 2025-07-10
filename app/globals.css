@@ -15,6 +15,13 @@
   --build-border: #e5e7eb;
   --build-text: #374151;
   --build-muted: #6b7280;
+  
+  /* Python universe colors - maintaining /build theme */
+  --python-blue: #3776ab;
+  --python-yellow: #ffd43b;
+  --data-purple: #6366f1;
+  --data-orange: #f59e0b;
+  --ai-teal: #06b6d4;
 }
 
 body {
@@ -490,6 +497,41 @@ body {
     gap: 8px;
   }
   
+  /* Unified Layout Utilities */
+  .layout-container {
+    @apply max-w-6xl mx-auto container-padding;
+  }
+  
+  .layout-header {
+    @apply bg-build-surface/80 backdrop-blur-sm border-b border-build-border sticky top-0 z-50;
+  }
+  
+  .layout-footer {
+    @apply bg-build-surface border-t border-build-border;
+  }
+  
+  .layout-content {
+    @apply flex-1;
+  }
+  
+  .layout-full-height {
+    @apply h-screen overflow-hidden;
+  }
+  
+  .layout-responsive {
+    @apply flex flex-col lg:flex-row;
+  }
+  
+  .layout-sidebar {
+    @apply w-full lg:w-80 border-b lg:border-b-0 lg:border-r border-build-border;
+    max-height: 40vh;
+    @apply lg:max-h-full;
+  }
+  
+  .layout-main {
+    @apply flex-1 flex flex-col;
+  }
+  
   .slide-nav-mobile button {
     min-width: 80px;
     flex-shrink: 0;
@@ -562,9 +604,63 @@ body {
   }
 }
 
+/* Python universe utilities - extending /build theme */
+.python-accent {
+  color: var(--python-blue);
+}
+
+.data-science-accent {
+  color: var(--data-purple);
+}
+
+.ai-ml-accent {
+  color: var(--ai-teal);
+}
+
+.btn-python {
+  @apply bg-python-blue hover:bg-python-blue/90 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200;
+  background-color: var(--python-blue);
+}
+
+.btn-data-science {
+  @apply bg-data-purple hover:bg-data-purple/90 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200;
+  background-color: var(--data-purple);
+}
+
+.btn-ai-ml {
+  @apply bg-ai-teal hover:bg-ai-teal/90 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200;
+  background-color: var(--ai-teal);
+}
+
+/* Python-themed glows */
+.python-glow {
+  box-shadow: 0 0 10px var(--python-blue), 0 0 20px var(--python-blue);
+}
+
+.data-glow {
+  box-shadow: 0 0 10px var(--data-purple), 0 0 20px var(--data-purple);
+}
+
+/* Enhanced mobile layout for Python coding */
+@media (max-width: 768px) {
+  .python-mobile-layout {
+    @apply flex flex-col h-screen;
+  }
+  
+  .python-editor-mobile {
+    @apply min-h-[45vh] text-base;
+    font-size: 16px; /* Prevent zoom on iOS */
+    line-height: 1.6;
+  }
+  
+  .python-output-mobile {
+    @apply min-h-[35vh] text-sm;
+  }
+}
+
 /* High DPI screen optimizations */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .orange-glow, .pink-glow {
+  .orange-glow, .pink-glow, .python-glow, .data-glow {
     box-shadow: 0 0 5px var(--build-accent), 0 0 10px var(--build-accent);
   }
 }
@@ -575,7 +671,7 @@ body {
     display: none !important;
   }
   
-  .btn-primary, .btn-secondary, .btn-minimal, .btn-pink {
+  .btn-primary, .btn-secondary, .btn-minimal, .btn-pink, .btn-python, .btn-data-science, .btn-ai-ml {
     @apply border border-gray-400 bg-transparent text-black;
   }
 } 

@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
+import SessionProvider from './components/auth/SessionProvider'
+import { getServerSession } from 'next-auth'
+import { authOptions } from './lib/auth'
 
 const inter = Inter({ subsets: ['latin'] })
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' })
@@ -46,15 +49,19 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await getServerSession(authOptions)
+
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.className} ${jetbrainsMono.variable} antialiased bg-gray-900 text-gray-100`}>
-        {children}
+        <SessionProvider session={session}>
+          {children}
+        </SessionProvider>
       </body>
     </html>
   )

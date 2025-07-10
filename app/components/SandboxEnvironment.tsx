@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import { Play, RotateCcw, Terminal, ArrowLeft, Code, Zap, Home, Copy, CheckCircle } from 'lucide-react'
+import MonacoCodeEditor from './MonacoCodeEditor'
 
 // Dynamically import python-runner to avoid SSR issues
 const usePythonRunner = () => {
@@ -456,13 +457,19 @@ console.log(greet("Builder"));
           </div>
 
           {/* Code Editor */}
-          <textarea
-            value={getCurrentCode()}
-            onChange={(e) => setCurrentCode(e.target.value)}
-            className="flex-1 p-3 sm:p-4 bg-tan-50 text-build-text font-mono resize-none outline-none border-0 placeholder-build-muted code-editor-mobile"
-            placeholder={`Start coding in ${currentConfig.name}...`}
-            spellCheck={false}
-          />
+          <div className="flex-1">
+            <MonacoCodeEditor
+              value={getCurrentCode()}
+              onChange={setCurrentCode}
+              height="100%"
+              language={currentLanguage === 'python' ? 'python' : 'javascript'}
+              theme="dark"
+              placeholder={`# Start coding in ${currentConfig.name}...\n# Try some ${currentConfig.name} magic!`}
+              fontSize={14}
+              minimap={false}
+              wordWrap={true}
+            />
+          </div>
         </div>
 
         {/* Output Panel */}
