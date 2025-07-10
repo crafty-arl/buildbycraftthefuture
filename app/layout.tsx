@@ -9,6 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
   title: '/build - Learn by Doing',
   description: 'What do you want to build today? Interactive coding modules where you run it, break it, and learn why. No setup, no fluff - just pure building.',
   keywords: ['learn coding', 'interactive programming', 'build projects', 'Python', 'JavaScript', 'learn by doing'],

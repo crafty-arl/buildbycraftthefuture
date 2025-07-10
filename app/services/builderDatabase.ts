@@ -77,6 +77,11 @@ class BuilderDatabaseService {
 
   // Load database from localStorage or create default
   private loadDatabase(): BuilderDatabase {
+    // Check if we're on the client side
+    if (typeof window === 'undefined') {
+      return this.createDefaultDatabase()
+    }
+    
     try {
       const stored = localStorage.getItem(this.storageKey)
       if (stored) {
@@ -93,6 +98,11 @@ class BuilderDatabaseService {
 
   // Save database to localStorage
   private saveDatabase(): void {
+    // Only save if we're on the client side
+    if (typeof window === 'undefined') {
+      return
+    }
+    
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(this.database))
     } catch (error) {
