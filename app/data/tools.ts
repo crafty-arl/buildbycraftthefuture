@@ -183,6 +183,42 @@ export const tools: SimpleTool[] = [
         description: "Long, complex password"
       }
     ]
+  },
+  {
+    id: 'textbar-stepped',
+    slug: 'textbar',
+    title: '📊 TextBar',
+    description: 'Create a text-only bar chart generator in pure Python, running in-browser. You\'ll learn to work with dictionaries, loops, string multiplication, scaling values, alignment, and function design—no external libraries, no `input()`, just variables you change and re-run.',
+    track: 'python',
+    difficulty: 'Beginner',
+    estimatedTime: '20 min',
+    order: 5,
+    lessonType: 'stepped',
+    
+    // Load the stepped lesson dynamically
+    steppedLesson: undefined, // Will be loaded asynchronously
+    
+    concepts: [
+      'Dictionaries and iteration',
+      'Max/min value calculation',
+      'Scaling numeric values',
+      'String multiplication for graphics',
+      'Label alignment',
+      'Summary statistics',
+      'Function encapsulation'
+    ],
+    testCases: [
+      {
+        input: {'Apples': 10, 'Oranges': 6, 'Bananas': 9},
+        expectedOutput: "Should show aligned bars with totals",
+        description: "Basic bar chart with fruit data"
+      },
+      {
+        input: {'X': 5, 'Y': 10, 'Z': 7},
+        expectedOutput: "Should generate scaled chart with custom width",
+        description: "Function call with custom parameters"
+      }
+    ]
   }
 ]
 
@@ -212,6 +248,8 @@ export async function getToolWithSteps(slug: string): Promise<SimpleTool | undef
         lessonSlug = `03-${tool.slug}-stepped`
       } else if (tool.slug === 'passcheck') {
         lessonSlug = `04-${tool.slug}-stepped`
+      } else if (tool.slug === 'textbar') {
+        lessonSlug = `05-${tool.slug}-stepped`
       } else {
         lessonSlug = `${tool.slug}-stepped`
       }

@@ -266,6 +266,12 @@ _stdout_buffer.getvalue()
         setOutput(finalOutput + '\n\n✅ Great job! Your receipt generator is working!')
       }
       
+      // Check for TextBar completion (bars + total)
+      if (finalOutput.includes('█') && finalOutput.includes('Total') && finalOutput.includes('-')) {
+        completeToolIfNotCompleted(tool?.slug || '', 100)
+        setOutput(finalOutput + '\n\n✅ Excellent! Your text bar chart generator is working perfectly!')
+      }
+      
       // Check step completion for stepped lessons
       if (tool?.lessonType === 'stepped' && tool.steppedLesson) {
         checkStepCompletion(finalOutput)

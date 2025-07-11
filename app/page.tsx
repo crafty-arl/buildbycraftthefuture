@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Play, Terminal, Wrench, Zap, ArrowRight, X, Code2, ExternalLink, Trophy, Star, CheckCircle } from 'lucide-react'
 import LayoutWrapper from './components/layout/LayoutWrapper'
-import { tools } from './data/tools'
+import { getAllTools } from './data/tools'
 
 export default function HomePage() {
   const [userXP, setUserXP] = useState(0)
@@ -112,7 +112,7 @@ export default function HomePage() {
           </p>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tools.map((tool, index) => {
+            {getAllTools().map((tool, index) => {
               const isCompleted = completedTools.includes(tool.id)
               const cardColor = index % 3 === 0 ? 'card-accent' : index % 3 === 1 ? 'card-pink' : 'card'
               const hoverColor = index % 3 === 0 ? 'accent-hover' : index % 3 === 1 ? 'pink-hover' : 'minimal-hover'

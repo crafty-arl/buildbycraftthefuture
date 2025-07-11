@@ -1,0 +1,108 @@
+{
+  "id": "textbar-stepped",
+  "title": "📊 TextBar",
+  "difficulty": "Beginner",
+  "time": "20 minutes",
+  "track": "Python",
+  "overview": "Create a text-only bar chart generator in pure Python, running in-browser. You'll learn to work with dictionaries, loops, string multiplication, scaling values, alignment, and function design—no external libraries, no `input()`, just variables you change and re-run.",
+  "xp": 100,
+  "concepts": [
+    "Dictionaries and iteration",
+    "Max/min value calculation",
+    "Scaling numeric values",
+    "String multiplication for graphics",
+    "Label alignment",
+    "Summary statistics",
+    "Function encapsulation"
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Define Your Data",
+      "goal": "Create a dictionary of labels and values",
+      "instructions": [
+        "At the top, define `data = {}` with at least three key–value pairs",
+        "Print `data` to verify its contents"
+      ],
+      "starterCode": "# Step 1: Define data\n\ndata = {}\nprint('Data:', data)",
+      "solutionCode": "# Step 1: Define data\n\ndata = {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nprint('Data:', data)",
+      "expectedOutput": "Data: {'Apples': 10, 'Oranges': 6, 'Bananas': 9}"
+    },
+    {
+      "id": "step-2",
+      "title": "Find the Maximum Value",
+      "goal": "Determine the largest value in your dataset",
+      "instructions": [
+        "Add code to compute `max_val = max(data.values())`",
+        "Print `max_val`"
+      ],
+      "starterCode": "# Step 1: Define data\n\ndata = {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nprint('Data:', data)\n\n# Step 2: Find maximum\nmax_val = None  # TODO: compute max value\nprint('Max value:', max_val)",
+      "solutionCode": "# Step 1: Define data\n\ndata = {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nprint('Data:', data)\n\n# Step 2: Find maximum\nmax_val = max(data.values())\nprint('Max value:', max_val)",
+      "expectedOutput": "Data: {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nMax value: 10"
+    },
+    {
+      "id": "step-3",
+      "title": "Set Chart Width & Scale",
+      "goal": "Decide on a maximum bar width and compute scaled lengths",
+      "instructions": [
+        "Add `max_width = 20`",
+        "Create `lengths = {}` and fill it by scaling each value",
+        "Print the scaled lengths"
+      ],
+      "starterCode": "# Step 1: Define data\n\ndata = {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nprint('Data:', data)\n\n# Step 2: Find maximum\nmax_val = max(data.values())\nprint('Max value:', max_val)\n\n# Step 3: Scale lengths\nmax_width = None  # e.g. 20\nlengths = {}\n# TODO: fill lengths by scaling each data[label]\nprint('Scaled lengths:', lengths)",
+      "solutionCode": "# Step 1: Define data\n\ndata = {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nprint('Data:', data)\n\n# Step 2: Find maximum\nmax_val = max(data.values())\nprint('Max value:', max_val)\n\n# Step 3: Scale lengths\nmax_width = 20\nlengths = {}\nfor k, v in data.items():\n    lengths[k] = int(v / max_val * max_width)\nprint('Scaled lengths:', lengths)",
+      "expectedOutput": "Data: {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nMax value: 10\nScaled lengths: {'Apples': 20, 'Oranges': 12, 'Bananas': 18}"
+    },
+    {
+      "id": "step-4",
+      "title": "Render the Bars",
+      "goal": "Print each label followed by a bar of `█` characters",
+      "instructions": [
+        "Add a loop to print each label with its bar",
+        "Use `k + ' ' + '█'*length` for each line"
+      ],
+      "starterCode": "# Step 1: Define data\n\ndata = {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nprint('Data:', data)\n\n# Step 2: Find maximum\nmax_val = max(data.values())\nprint('Max value:', max_val)\n\n# Step 3: Scale lengths\nmax_width = 20\nlengths = {}\nfor k, v in data.items():\n    lengths[k] = int(v / max_val * max_width)\nprint('Scaled lengths:', lengths)\n\n# Step 4: Render bars\nfor k, length in lengths.items():\n    # TODO: print bar line\n    pass",
+      "solutionCode": "# Step 1: Define data\n\ndata = {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nprint('Data:', data)\n\n# Step 2: Find maximum\nmax_val = max(data.values())\nprint('Max value:', max_val)\n\n# Step 3: Scale lengths\nmax_width = 20\nlengths = {}\nfor k, v in data.items():\n    lengths[k] = int(v / max_val * max_width)\nprint('Scaled lengths:', lengths)\n\n# Step 4: Render bars\nfor k, length in lengths.items():\n    print(f\"{k}: \" + \"█\" * length)",
+      "expectedOutput": "Data: {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nMax value: 10\nScaled lengths: {'Apples': 20, 'Oranges': 12, 'Bananas': 18}\nApples: ████████████████████\nOranges: ████████████\nBananas: ████████████████"
+    },
+    {
+      "id": "step-5",
+      "title": "Align Labels",
+      "goal": "Ensure all labels line up by padding to the same width",
+      "instructions": [
+        "Add `max_label = max(len(k) for k in data)`",
+        "Update the print statement to use `k.ljust(max_label)` for alignment"
+      ],
+      "starterCode": "# Step 1: Define data\n\ndata = {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nprint('Data:', data)\n\n# Step 2: Find maximum\nmax_val = max(data.values())\nprint('Max value:', max_val)\n\n# Step 3: Scale lengths\nmax_width = 20\nlengths = {}\nfor k, v in data.items():\n    lengths[k] = int(v / max_val * max_width)\nprint('Scaled lengths:', lengths)\n\n# Step 4: Render bars\nfor k, length in lengths.items():\n    print(f\"{k}: \" + \"█\" * length)\n\n# Step 5: Align labels\nmax_label = None  # TODO: compute longest key length\nfor k, length in lengths.items():\n    # TODO: print with padded label\n    pass",
+      "solutionCode": "# Step 1: Define data\n\ndata = {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nprint('Data:', data)\n\n# Step 2: Find maximum\nmax_val = max(data.values())\nprint('Max value:', max_val)\n\n# Step 3: Scale lengths\nmax_width = 20\nlengths = {}\nfor k, v in data.items():\n    lengths[k] = int(v / max_val * max_width)\nprint('Scaled lengths:', lengths)\n\n# Step 4: Render bars\nfor k, length in lengths.items():\n    print(f\"{k}: \" + \"█\" * length)\n\n# Step 5: Align labels\nmax_label = max(len(k) for k in data)\nfor k, length in lengths.items():\n    print(f\"{k.ljust(max_label)} | \" + \"█\" * length)",
+      "expectedOutput": "Data: {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nMax value: 10\nScaled lengths: {'Apples': 20, 'Oranges': 12, 'Bananas': 18}\nApples: ████████████████████\nOranges: ████████████\nBananas: ████████████████\nApples  | ████████████████████\nOranges | ████████████\nBananas | ████████████████"
+    },
+    {
+      "id": "step-6",
+      "title": "Add Totals Line",
+      "goal": "Print the sum of all values beneath the chart",
+      "instructions": [
+        "Add `total = sum(data.values())`",
+        "Print a separator line with `'-' * (max_label + 3 + max_width)`",
+        "Print the total with proper alignment"
+      ],
+      "starterCode": "# Step 1: Define data\n\ndata = {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nprint('Data:', data)\n\n# Step 2: Find maximum\nmax_val = max(data.values())\nprint('Max value:', max_val)\n\n# Step 3: Scale lengths\nmax_width = 20\nlengths = {}\nfor k, v in data.items():\n    lengths[k] = int(v / max_val * max_width)\nprint('Scaled lengths:', lengths)\n\n# Step 4: Render bars\nfor k, length in lengths.items():\n    print(f\"{k}: \" + \"█\" * length)\n\n# Step 5: Align labels\nmax_label = max(len(k) for k in data)\nfor k, length in lengths.items():\n    print(f\"{k.ljust(max_label)} | \" + \"█\" * length)\n\n# Step 6: Add totals\n# TODO: compute total and print\npass",
+      "solutionCode": "# Step 1: Define data\n\ndata = {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nprint('Data:', data)\n\n# Step 2: Find maximum\nmax_val = max(data.values())\nprint('Max value:', max_val)\n\n# Step 3: Scale lengths\nmax_width = 20\nlengths = {}\nfor k, v in data.items():\n    lengths[k] = int(v / max_val * max_width)\nprint('Scaled lengths:', lengths)\n\n# Step 4: Render bars\nfor k, length in lengths.items():\n    print(f\"{k}: \" + \"█\" * length)\n\n# Step 5: Align labels\nmax_label = max(len(k) for k in data)\nfor k, length in lengths.items():\n    print(f\"{k.ljust(max_label)} | \" + \"█\" * length)\n\n# Step 6: Add totals\ntotal = sum(data.values())\nseparator = '-' * (max_label + 3 + max_width)\nprint(separator)\nprint(f\"{'Total'.ljust(max_label)} | {total}\")",
+      "expectedOutput": "Data: {'Apples': 10, 'Oranges': 6, 'Bananas': 9}\nMax value: 10\nScaled lengths: {'Apples': 20, 'Oranges': 12, 'Bananas': 18}\nApples: ████████████████████\nOranges: ████████████\nBananas: ████████████████\nApples  | ████████████████████\nOranges | ████████████\nBananas | ████████████████\n-------------------------------------\nTotal   | 25"
+    },
+    {
+      "id": "step-7",
+      "title": "Encapsulate in `draw_chart`",
+      "goal": "Wrap all logic into a function and test with a new dataset",
+      "instructions": [
+        "Create `def draw_chart(d, width=20):`",
+        "Move all the chart logic inside the function",
+        "Replace `data` with `d` and `max_width` with `width`",
+        "Test with `draw_chart({'X':5,'Y':10,'Z':7}, 30)`"
+      ],
+      "starterCode": "# Step 7: Wrap in function\n\ndef draw_chart(d, width=20):\n    pass\n\n# Test\nnew_data = {'X':5, 'Y':10, 'Z':7}\ndraw_chart(new_data, 30)",
+      "solutionCode": "# Step 7: Wrap in function\n\ndef draw_chart(d, width=20):\n    max_val = max(d.values())\n    lengths = {k: int(v / max_val * width) for k, v in d.items()}\n    max_label = max(len(k) for k in d)\n    for k, length in lengths.items():\n        print(f\"{k.ljust(max_label)} | \" + \"█\" * length)\n    total = sum(d.values())\n    sep = '-' * (max_label + 3 + width)\n    print(sep)\n    print(f\"{'Total'.ljust(max_label)} | {total}\")\n\n# Test\nnew_data = {'X':5, 'Y':10, 'Z':7}\ndraw_chart(new_data, 30)",
+      "expectedOutput": "X | ██████████████████████████\nY | ██████████████████████████████████████████████\nZ | ███████████████████████████\n-----------------------------------------\nTotal | 22"
+    }
+  ]
+}
