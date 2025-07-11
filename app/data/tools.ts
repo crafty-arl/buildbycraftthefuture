@@ -10,6 +10,7 @@ export interface SimpleTool {
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced'
   estimatedTime: string
   order: number
+  seasonId: string // Add season ID for grouping
   
   // Choose lesson format
   lessonType: 'simple' | 'stepped'
@@ -31,6 +32,12 @@ export interface SimpleTool {
   }>
 }
 
+export interface SeasonGroup {
+  seasonId: string
+  seasonName: string
+  tools: SimpleTool[]
+}
+
 export const tools: SimpleTool[] = [
   {
     id: 'quickreceipt-stepped',
@@ -41,6 +48,7 @@ export const tools: SimpleTool[] = [
     difficulty: 'Beginner',
     estimatedTime: '20 min',
     order: 1,
+    seasonId: 's0',
     lessonType: 'stepped', // Use the new stepped format
     
     // Load the stepped lesson dynamically
@@ -78,6 +86,7 @@ export const tools: SimpleTool[] = [
     difficulty: 'Beginner',
     estimatedTime: '15 min',
     order: 2,
+    seasonId: 's0',
     lessonType: 'stepped',
     
     // Load the stepped lesson dynamically
@@ -112,6 +121,7 @@ export const tools: SimpleTool[] = [
     difficulty: 'Beginner',
     estimatedTime: '25 min',
     order: 3,
+    seasonId: 's0',
     lessonType: 'stepped',
     
     // Load the stepped lesson dynamically
@@ -153,6 +163,7 @@ export const tools: SimpleTool[] = [
     difficulty: 'Beginner',
     estimatedTime: '25 min',
     order: 4,
+    seasonId: 's0',
     lessonType: 'stepped',
     
     // Load the stepped lesson dynamically
@@ -193,6 +204,7 @@ export const tools: SimpleTool[] = [
     difficulty: 'Beginner',
     estimatedTime: '20 min',
     order: 5,
+    seasonId: 's0',
     lessonType: 'stepped',
     
     // Load the stepped lesson dynamically
@@ -321,6 +333,41 @@ export function getAllTools(): SimpleTool[] {
   return tools.sort((a, b) => a.order - b.order)
 }
 
+// Group tools by season
+export function getToolsBySeason(): SeasonGroup[] {
+  const seasonMap = new Map<string, SimpleTool[]>()
+  
+  // Group tools by seasonId
+  tools.forEach(tool => {
+    if (!seasonMap.has(tool.seasonId)) {
+      seasonMap.set(tool.seasonId, [])
+    }
+    seasonMap.get(tool.seasonId)!.push(tool)
+  })
+  
+  // Convert to SeasonGroup array and sort by seasonId
+  const seasonGroups: SeasonGroup[] = Array.from(seasonMap.entries()).map(([seasonId, tools]) => ({
+    seasonId,
+    seasonName: getSeasonName(seasonId),
+    tools: tools.sort((a, b) => a.order - b.order)
+  }))
+  
+  return seasonGroups.sort((a, b) => a.seasonId.localeCompare(b.seasonId))
+}
+
+// Get season name from season ID
+export function getSeasonName(seasonId: string): string {
+  const seasonNames: Record<string, string> = {
+    's0': 'The Toolbelt'
+  }
+  return seasonNames[seasonId] || `Season ${seasonId}`
+}
+
+// Get tools for a specific season
+export function getToolsBySeasonId(seasonId: string): SimpleTool[] {
+  return tools.filter(tool => tool.seasonId === seasonId).sort((a, b) => a.order - b.order)
+}
+
 // Simple lesson template for solo developers
 export const simpleLessonTemplate = {
   id: 'new-lesson',
@@ -331,6 +378,7 @@ export const simpleLessonTemplate = {
   difficulty: 'Beginner' as const,
   estimatedTime: '15 min',
   order: 2,
+      seasonId: 's0',
   lessonType: 'simple' as const,
   concepts: [
     'Concept 1',

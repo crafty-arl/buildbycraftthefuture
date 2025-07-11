@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Play, Terminal, Wrench, Zap, ArrowRight, X, Code2, ExternalLink, Trophy, Star, CheckCircle } from 'lucide-react'
 import LayoutWrapper from './components/layout/LayoutWrapper'
-import { getAllTools } from './data/tools'
+import { getToolsBySeason, getSeasonName } from './data/tools'
 
 export default function HomePage() {
   const [userXP, setUserXP] = useState(0)
@@ -51,6 +51,21 @@ export default function HomePage() {
 
   return (
     <LayoutWrapper currentPage="home">
+      <style jsx>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+                .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .line-clamp-5 {
+          display: -webkit-box;
+          -webkit-line-clamp: 5;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        `}</style>
       <div className="bg-build-bg build-grid">
 
       {/* Hero Section */}
@@ -101,68 +116,78 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Season 1 Tools */}
+      {/* Season 0: The Toolbelt */}
       <section id="tools" className="section-padding bg-tan-50/50">
         <div className="max-w-6xl mx-auto container-padding">
-          <h2 className="text-section font-bold text-center mb-3 sm:mb-4 text-build-text font-mono">
-            Featured Tool — 🧾 QuickReceipt
-          </h2>
-          <p className="text-center text-build-muted mb-8 sm:mb-12 font-mono">
-            Build a real tool you can actually use. Generate clean, printable receipts with Python.
-          </p>
+          <div className="text-center mb-8 sm:mb-12">
+            <div className="inline-flex items-center px-4 py-2 bg-build-accent/10 border border-build-accent/20 rounded-full mb-4">
+              <span className="text-build-accent font-mono text-sm font-semibold">SEASON 0</span>
+              <span className="mx-2 text-build-accent/60">•</span>
+              <span className="text-build-accent font-mono text-sm">THE TOOLBELT</span>
+            </div>
+            <h2 className="text-section font-bold mb-3 sm:mb-4 text-build-text font-mono">
+              Master the Essential Tools
+            </h2>
+            <p className="text-center text-build-muted mb-8 font-mono max-w-2xl mx-auto">
+              Build 5 foundational tools that every Python developer needs in their toolkit. 
+              From receipts to charts, these tools solve real problems.
+            </p>
+          </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {getAllTools().map((tool, index) => {
-              const isCompleted = completedTools.includes(tool.id)
-              const cardColor = index % 3 === 0 ? 'card-accent' : index % 3 === 1 ? 'card-pink' : 'card'
-              const hoverColor = index % 3 === 0 ? 'accent-hover' : index % 3 === 1 ? 'pink-hover' : 'minimal-hover'
+          {getToolsBySeason().map((seasonGroup) => (
+            <div key={seasonGroup.seasonId} className="mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {seasonGroup.tools.map((tool, index) => {
+                  const isCompleted = completedTools.includes(tool.id)
+                  const cardColor = index % 3 === 0 ? 'card-accent' : index % 3 === 1 ? 'card-pink' : 'card'
+                  const hoverColor = index % 3 === 0 ? 'accent-hover' : index % 3 === 1 ? 'pink-hover' : 'minimal-hover'
               
               return (
-                <div key={tool.id} className={`${cardColor} p-4 sm:p-6 group ${hoverColor} transition-all duration-300 relative`}>
+                <div key={tool.id} className={`${cardColor} p-8 group ${hoverColor} transition-all duration-300 relative min-h-[450px] flex flex-col`}>
                   {isCompleted && (
                     <div className="absolute top-3 right-3">
                       <CheckCircle className="w-5 h-5 text-build-accent" />
                     </div>
                   )}
                   
-                  <div className="flex items-center mb-3 sm:mb-4">
-                    <div className={`p-2 rounded touch-target ${getTrackColor(tool.track)}`}>
-                      <span className="text-xl sm:text-2xl">
+                  <div className="flex items-center mb-6">
+                    <div className={`p-3 rounded touch-target ${getTrackColor(tool.track)}`}>
+                      <span className="text-2xl sm:text-3xl">
                         {tool.track === 'python' ? '🐍' : tool.track === 'ai' ? '🤖' : '📊'}
                       </span>
                     </div>
-                    <div className="ml-3">
-                      <span className="text-build-muted font-mono text-xs sm:text-sm">
+                    <div className="ml-4">
+                      <span className="text-build-muted font-mono text-sm">
                         /{tool.track}/tool-{tool.order}
                       </span>
-                      <div className="flex items-center space-x-2 mt-1">
-                        <span className={`px-2 py-0.5 text-xs rounded font-mono border ${getTrackColor(tool.track)}`}>
+                      <div className="flex items-center space-x-2 mt-2">
+                        <span className={`px-3 py-1 text-sm rounded font-mono border ${getTrackColor(tool.track)}`}>
                           {tool.difficulty}
                         </span>
-                        <span className="text-xs text-build-muted font-mono">
+                        <span className="text-sm text-build-muted font-mono">
                           +{tool.steppedLesson?.xp || (tool.difficulty === 'Beginner' ? '100' : tool.difficulty === 'Intermediate' ? '150' : '200')} XP
                         </span>
                       </div>
                     </div>
                   </div>
                   
-                  <h3 className="text-card font-semibold mb-2 sm:mb-3 text-build-text">{tool.title}</h3>
-                  <p className="text-build-muted leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base">{tool.description}</p>
+                  <h3 className="text-xl font-semibold mb-4 text-build-text">{tool.title}</h3>
+                  <p className="text-build-muted leading-relaxed mb-6 text-base flex-1 line-clamp-5">{tool.description}</p>
                   
-                  <div className="flex items-center justify-between text-xs sm:text-sm text-build-muted font-mono mb-4">
+                  <div className="flex items-center justify-between text-sm text-build-muted font-mono mb-6">
                     <span>{tool.estimatedTime}</span>
                     <span>{tool.concepts?.length || 0} concepts</span>
                   </div>
 
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mt-auto">
                     <div className="flex -space-x-1">
                       {(tool.concepts || []).slice(0, 3).map((concept, conceptIndex) => (
-                        <div key={conceptIndex} className="w-6 h-6 bg-build-accent/20 rounded-full border-2 border-white text-xs flex items-center justify-center font-mono">
+                        <div key={conceptIndex} className="w-8 h-8 bg-build-accent/20 rounded-full border-2 border-white text-sm flex items-center justify-center font-mono">
                           {concept.charAt(0)}
                         </div>
                       ))}
                       {(tool.concepts?.length || 0) > 3 && (
-                        <div className="w-6 h-6 bg-build-muted/20 rounded-full border-2 border-white text-xs flex items-center justify-center font-mono">
+                        <div className="w-8 h-8 bg-build-muted/20 rounded-full border-2 border-white text-sm flex items-center justify-center font-mono">
                           +{(tool.concepts?.length || 0) - 3}
                         </div>
                       )}
@@ -170,10 +195,10 @@ export default function HomePage() {
                     
                     <a 
                       href={`/tool/${tool.slug}`}
-                      className={`transition-colors font-mono text-xs sm:text-sm uppercase tracking-wider touch-target ${
-                        index % 3 === 0 ? 'text-build-accent hover:text-build-accent/80' : 
-                        index % 3 === 1 ? 'text-build-pink-neon hover:text-build-pink' : 
-                        'text-minimal-green hover:text-minimal-green/80'
+                      className={`transition-colors font-mono text-sm uppercase tracking-wider touch-target px-4 py-2 rounded ${
+                        index % 3 === 0 ? 'text-build-accent hover:text-build-accent/80 border border-build-accent/20 hover:border-build-accent/40' : 
+                        index % 3 === 1 ? 'text-build-pink-neon hover:text-build-pink border border-build-pink/20 hover:border-build-pink/40' : 
+                        'text-minimal-green hover:text-minimal-green/80 border border-minimal-green/20 hover:border-minimal-green/40'
                       }`}
                     >
                       {isCompleted ? 'View Tool →' : 'Build Now →'}
@@ -182,15 +207,28 @@ export default function HomePage() {
                 </div>
               )
             })}
-          </div>
+              </div>
+            </div>
+          ))}
           
-          <div className="text-center mt-8">
-            <p className="text-build-muted mb-4">
-              Perfect the Receipt Generator, then more tools will be added
-            </p>
-            <a href="/upgrade" className="btn-minimal">
-              Learn about Season Pass →
-            </a>
+          <div className="text-center mt-12">
+            <div className="bg-build-surface border border-build-border rounded-lg p-8 max-w-2xl mx-auto">
+              <h3 className="text-xl font-bold text-build-text font-mono mb-3">
+                🎯 Season 0 Complete
+              </h3>
+              <p className="text-build-muted mb-4">
+                Master all 5 tools in The Toolbelt to unlock advanced seasons with AI tools, 
+                data analysis, and complex automation projects.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <a href="/upgrade" className="btn-minimal">
+                  Explore Season Pass →
+                </a>
+                <a href="/profile" className="btn-primary">
+                  View Your Progress →
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -224,8 +262,8 @@ export default function HomePage() {
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <div className="bg-build-surface border border-build-border rounded-lg p-8">
-              <div className="text-4xl font-bold text-build-accent font-mono mb-2">1</div>
-              <div className="text-build-muted font-mono">Tool to Perfect</div>
+              <div className="text-4xl font-bold text-build-accent font-mono mb-2">5</div>
+              <div className="text-build-muted font-mono">Tools in Season 0</div>
             </div>
             <div className="bg-build-surface border border-build-border rounded-lg p-8">
               <div className="text-4xl font-bold text-build-accent font-mono mb-2">100%</div>
@@ -246,7 +284,7 @@ export default function HomePage() {
               Every completion moves you closer to mastery.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="/tool/receipt-generator" className="btn-primary btn-large">
+              <a href="/tool/quickreceipt" className="btn-primary btn-large">
                 Build Your First Tool
               </a>
               <a href="/upgrade" className="btn-minimal btn-large">
