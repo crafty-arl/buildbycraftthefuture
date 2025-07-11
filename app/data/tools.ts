@@ -33,10 +33,10 @@ export interface SimpleTool {
 
 export const tools: SimpleTool[] = [
   {
-    id: 'receipt-generator',
-    slug: 'receipt-generator',
-    title: 'Receipt Generator',
-    description: 'Build a simple receipt generator using pure Python. Learn through 7 progressive steps that teach Python fundamentals.',
+    id: 'quickreceipt-stepped',
+    slug: 'quickreceipt',
+    title: '🧾 QuickReceipt',
+    description: 'Build a real tool you can actually use. Whether you\'re selling earrings at a pop-up, tutoring a friend, or just organizing your own expenses — this tool helps you generate a clean, printable receipt with Python.',
     track: 'python',
     difficulty: 'Beginner',
     estimatedTime: '20 min',
@@ -47,11 +47,11 @@ export const tools: SimpleTool[] = [
     steppedLesson: undefined, // Will be loaded asynchronously
     
     concepts: [
-      'Variables and data types',
-      'Lists and dictionaries',
-      'For loops',
-      'String formatting',
-      'Mathematical operations'
+      'Building real-world tools',
+      'Data storage and organization',
+      'Financial calculations',
+      'Professional formatting',
+      'Error handling and validation'
     ],
     testCases: [
       {

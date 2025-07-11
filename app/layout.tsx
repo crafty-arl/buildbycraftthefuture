@@ -15,6 +15,12 @@ export const metadata: Metadata = {
   keywords: ['learn coding', 'interactive programming', 'build projects', 'Python', 'JavaScript', 'learn by doing'],
   authors: [{ name: 'Carl', url: 'https://craftthefuture.xyz' }],
   creator: 'Carl - Craft The Future',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
   openGraph: {
     title: '/build - Learn by Doing',
     description: 'What do you want to build today? Interactive coding that runs in your browser.',
@@ -59,7 +65,16 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} ${jetbrainsMono.variable} antialiased bg-gray-900 text-gray-100`}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+        <meta name="theme-color" content="#f97316" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="/build" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="format-detection" content="telephone=no" />
+      </head>
+      <body className={`${inter.className} ${jetbrainsMono.variable} antialiased bg-build-bg text-build-text min-h-screen`}>
         <SessionProvider session={session}>
           {children}
         </SessionProvider>

@@ -69,7 +69,7 @@ export default function Header({
             {showBackButton && onBackClick && (
               <button
                 onClick={onBackClick}
-                className="p-1 rounded hover:bg-tan-100 transition-colors"
+                className="p-2 rounded hover:bg-tan-100 transition-colors touch-target"
                 title="Go back"
               >
                 <ArrowLeft className="w-5 h-5 text-build-muted" />
@@ -98,7 +98,7 @@ export default function Header({
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-build-muted hover:text-build-accent transition-colors font-mono text-sm lg:text-base"
+                  className="text-build-muted hover:text-build-accent transition-colors font-mono text-sm lg:text-base touch-target"
                 >
                   {item.name}
                 </a>
@@ -150,6 +150,7 @@ export default function Header({
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   className="p-2 text-build-muted hover:text-build-accent transition-colors touch-target"
+                  aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
                 >
                   {mobileMenuOpen ? (
                     <X className="w-5 h-5" />
@@ -161,20 +162,24 @@ export default function Header({
             </div>
           </div>
 
-          {/* Mobile Navigation */}
-          {showNavigation && mobileMenuOpen && (
-            <nav className="mt-3 pt-3 border-t border-build-border nav-mobile">
-                              {navigation.map((item) => (
+          {/* Mobile Navigation - Enhanced with smooth animation */}
+          {showNavigation && (
+            <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
+              mobileMenuOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+            }`}>
+              <nav className="mt-3 pt-3 border-t border-build-border nav-mobile">
+                {navigation.map((item) => (
                   <a
                     key={item.name}
                     href={item.href}
-                    className="text-build-muted hover:text-build-accent transition-colors font-mono touch-target"
+                    className="text-build-muted hover:text-build-accent transition-colors font-mono touch-target py-2 block"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.name}
                   </a>
                 ))}
-            </nav>
+              </nav>
+            </div>
           )}
         </div>
       </div>

@@ -84,7 +84,7 @@ export default function HomePage() {
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
             <a 
-              href="/tool/receipt-generator"
+              href="/tool/quickreceipt"
               className="btn-primary btn-mobile group w-full sm:w-auto"
             >
               <span>Start Building Tools</span>
@@ -105,10 +105,10 @@ export default function HomePage() {
       <section id="tools" className="section-padding bg-tan-50/50">
         <div className="max-w-6xl mx-auto container-padding">
           <h2 className="text-section font-bold text-center mb-3 sm:mb-4 text-build-text font-mono">
-            Featured Tool — Receipt Generator
+            Featured Tool — 🧾 QuickReceipt
           </h2>
           <p className="text-center text-build-muted mb-8 sm:mb-12 font-mono">
-            Learn string formatting and math operations by building a stylized receipt generator.
+            Build a real tool you can actually use. Generate clean, printable receipts with Python.
           </p>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
