@@ -432,15 +432,9 @@ export function useBuilderProgress() {
 
   // Load courses with unlock status
   const loadCoursesWithUnlockStatus = useCallback(() => {
-    // Import courses and update unlock status based on achievements
-    import('../data/courses').then(({ courses: coursesData, updateCourseUnlockStatus }) => {
-      const unlockedAchievementIds = state.achievements
-        .filter(a => a.unlocked)
-        .map(a => a.id)
-      
-      const coursesWithStatus = updateCourseUnlockStatus(coursesData, unlockedAchievementIds)
-      setCourses(coursesWithStatus)
-    })
+    // Old courses system removed - this function is now a no-op
+    // Tools are loaded through the tools system instead
+    console.log('loadCoursesWithUnlockStatus: Old courses system removed')
   }, [state.achievements])
 
   // Update courses when achievements change
