@@ -1,0 +1,85 @@
+{
+  "id": "namemixer-stepped",
+  "title": "🔤 NameMixer",
+  "difficulty": "Beginner",
+  "time": "15 minutes",
+  "track": "Python",
+  "overview": "Build a simple word-mixing tool that sparks creative names for products, projects, or any idea. Learn to work with lists, random selection, and string concatenation — all in your browser with pure Python.",
+  "xp": 80,
+  "concepts": [
+    "Lists and indexing",
+    "Random selection",
+    "String concatenation",
+    "Function design",
+    "In-memory state"
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Prepare Word Lists",
+      "goal": "Load two lists of words—adjectives and nouns—for mixing",
+      "instructions": [
+        "Define a list called `adjectives` with at least 5 descriptive words",
+        "Define a list called `nouns` with at least 5 object words",
+        "Print both lists to confirm their contents"
+      ],
+      "starterCode": "# 🔤 NameMixer - Step 1: Prepare Word Lists\n\n# TODO: Create your word lists below\nadjectives = []  # e.g. [\"Quantum\", \"Cozy\", \"Bold\"]\nnouns = []       # e.g. [\"Taco\", \"Bot\", \"Cloudwear\"]\n\nprint(\"Adjectives:\", adjectives)\nprint(\"Nouns:\", nouns)",
+      "solutionCode": "# 🔤 NameMixer - Step 1: Prepare Word Lists\n\nadjectives = [\"Quantum\", \"Cozy\", \"Bold\", \"Sunny\", \"Pixel\"]\nnouns = [\"Taco\", \"Bot\", \"Cloudwear\", \"Frame\", \"Spark\"]\n\nprint(\"Adjectives:\", adjectives)\nprint(\"Nouns:\", nouns)",
+      "expectedOutput": "Adjectives: ['Quantum', 'Cozy', 'Bold', 'Sunny', 'Pixel']\nNouns: ['Taco', 'Bot', 'Cloudwear', 'Frame', 'Spark']"
+    },
+    {
+      "id": "step-2",
+      "title": "Pick a Random Pair",
+      "goal": "Use the `random` module to select one adjective and one noun",
+      "instructions": [
+        "Import the `random` module",
+        "Use `random.choice` to pick one item from `adjectives`",
+        "Use `random.choice` to pick one item from `nouns`",
+        "Print both selected words"
+      ],
+      "starterCode": "# 🔤 NameMixer - Step 2: Pick a Random Pair\n\nimport random\n\nadjectives = [\"Quantum\", \"Cozy\", \"Bold\", \"Sunny\", \"Pixel\"]\nnouns = [\"Taco\", \"Bot\", \"Cloudwear\", \"Frame\", \"Spark\"]\n\n# TODO: Select one adjective and one noun randomly\nfirst = None  # random.choice(adjectives)\nsecond = None # random.choice(nouns)\n\nprint(\"Selected words:\", first, second)",
+      "solutionCode": "# 🔤 NameMixer - Step 2: Pick a Random Pair\n\nimport random\n\nadjectives = [\"Quantum\", \"Cozy\", \"Bold\", \"Sunny\", \"Pixel\"]\nnouns = [\"Taco\", \"Bot\", \"Cloudwear\", \"Frame\", \"Spark\"]\n\nfirst = random.choice(adjectives)\nsecond = random.choice(nouns)\n\nprint(\"Selected words:\", first, second)",
+      "expectedOutput": "Selected words: Cozy Frame  # (output will vary)"
+    },
+    {
+      "id": "step-3",
+      "title": "Combine into a Name",
+      "goal": "Concatenate the two chosen words into a single name",
+      "instructions": [
+        "Create a function `mix_name(adj, noun)` that returns a single string",
+        "Inside the function, join `adj` and `noun` with a space",
+        "Call `mix_name(first, second)` and print the result"
+      ],
+      "starterCode": "# 🔤 NameMixer - Step 3: Combine into a Name\n\nimport random\n\nadjectives = [\"Quantum\", \"Cozy\", \"Bold\", \"Sunny\", \"Pixel\"]\nnouns = [\"Taco\", \"Bot\", \"Cloudwear\", \"Frame\", \"Spark\"]\n\nfirst = random.choice(adjectives)\nsecond = random.choice(nouns)\n\n# TODO: Define mix_name()\ndef mix_name(adj, noun):\n    return \"\"\n\nresult = mix_name(first, second)\nprint(\"Mixed name:\", result)",
+      "solutionCode": "# 🔤 NameMixer - Step 3: Combine into a Name\n\nimport random\n\nadjectives = [\"Quantum\", \"Cozy\", \"Bold\", \"Sunny\", \"Pixel\"]\nnouns = [\"Taco\", \"Bot\", \"Cloudwear\", \"Frame\", \"Spark\"]\n\nfirst = random.choice(adjectives)\nsecond = random.choice(nouns)\n\ndef mix_name(adj, noun):\n    return f\"{adj} {noun}\"\n\nresult = mix_name(first, second)\nprint(\"Mixed name:\", result)",
+      "expectedOutput": "Mixed name: Bold Cloudwear  # (output will vary)"
+    },
+    {
+      "id": "step-4",
+      "title": "Loop for Multiple Names",
+      "goal": "Generate a list of multiple mixed names in one run",
+      "instructions": [
+        "Set a variable `count` to the number of names you want to generate (e.g., 3)",
+        "Use a `for` loop to repeat the mix-and-print process",
+        "Collect all generated names into a list and print that list at the end"
+      ],
+      "starterCode": "# 🔤 NameMixer - Step 4: Loop for Multiple Names\n\nimport random\n\nadjectives = [\"Quantum\", \"Cozy\", \"Bold\", \"Sunny\", \"Pixel\"]\nnouns = [\"Taco\", \"Bot\", \"Cloudwear\", \"Frame\", \"Spark\"]\n\ndef mix_name(adj, noun):\n    return f\"{adj} {noun}\"\n\n# TODO: Set count and loop\ncount = None  # e.g., 3\nnames = []\nfor _ in range(count):\n    # generate one mixed name\n    adj = random.choice(adjectives)\n    noun = random.choice(nouns)\n    names.append(mix_name(adj, noun))\n\nprint(\"All names:\", names)",
+      "solutionCode": "# 🔤 NameMixer - Step 4: Loop for Multiple Names\n\nimport random\n\nadjectives = [\"Quantum\", \"Cozy\", \"Bold\", \"Sunny\", \"Pixel\"]\nnouns = [\"Taco\", \"Bot\", \"Cloudwear\", \"Frame\", \"Spark\"]\n\ndef mix_name(adj, noun):\n    return f\"{adj} {noun}\"\n\ncount = 3\nnames = []\nfor _ in range(count):\n    adj = random.choice(adjectives)\n    noun = random.choice(nouns)\n    names.append(mix_name(adj, noun))\n\nprint(\"All names:\", names)",
+      "expectedOutput": "All names: ['Sunny Bot', 'Pixel Cloudwear', 'Bold Spark']"
+    },
+    {
+      "id": "step-5",
+      "title": "Save Favorites",
+      "goal": "Allow the user to save and review favorite names",
+      "instructions": [
+        "Create a list of responses to simulate user input (e.g., ['y', 'n'])",
+        "After each name, check if the corresponding response is 'y'",
+        "If yes, add it to a `favorites` list",
+        "At the end, print the `favorites` list"
+      ],
+      "starterCode": "# 🔤 NameMixer - Step 5: Save Favorites\n\nimport random\n\nadjectives = [\"Quantum\", \"Cozy\", \"Bold\", \"Sunny\", \"Pixel\"]\nnouns = [\"Taco\", \"Bot\", \"Cloudwear\", \"Frame\", \"Spark\"]\n\ndef mix_name(adj, noun):\n    return f\"{adj} {noun}\"\n\ncount = 3\n# TODO: Create responses list and check favorites\nresponses = []  # e.g., ['y', 'n', 'y']\nfavorites = []\nfor i in range(count):\n    name = mix_name(random.choice(adjectives), random.choice(nouns))\n    print(name)\n    if i < len(responses) and responses[i] == 'y':\n        favorites.append(name)\n\nprint(\"Your favorites:\", favorites)",
+      "solutionCode": "# 🔤 NameMixer - Step 5: Save Favorites\n\nimport random\n\nadjectives = [\"Quantum\", \"Cozy\", \"Bold\", \"Sunny\", \"Pixel\"]\nnouns = [\"Taco\", \"Bot\", \"Cloudwear\", \"Frame\", \"Spark\"]\n\ndef mix_name(adj, noun):\n    return f\"{adj} {noun}\"\n\ncount = 3\nresponses = ['y', 'n', 'y']\nfavorites = []\nfor i in range(count):\n    name = mix_name(random.choice(adjectives), random.choice(nouns))\n    print(name)\n    if i < len(responses) and responses[i] == 'y':\n        favorites.append(name)\n\nprint(\"Your favorites:\", favorites)",
+      "expectedOutput": "Quantum Taco\nPixel Bot\nCozy Cloudwear\nYour favorites: ['Quantum Taco', 'Cozy Cloudwear']"
+    }
+  ]
+}

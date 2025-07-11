@@ -1,0 +1,113 @@
+{
+  "id": "dategapfinder-stepped",
+  "title": "📆 DateGap Finder",
+  "difficulty": "Beginner",
+  "time": "25 minutes",
+  "track": "Python",
+  "overview": "Build an in-browser Python tool that tells you how many days remain until a future date. Perfect for countdowns, birthdays, or deadlines. You’ll work with strings, `datetime`, error handling, and flexible parsing—no `input()`, just variables you can change and re-run.",
+  "xp": 120,
+  "concepts": [
+    "Working with string variables",
+    "`datetime.strptime` and multiple formats",
+    "Date arithmetic",
+    "Error handling with `try/except`",
+    "Conditional logic",
+    "Function design",
+    "Clear output formatting"
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Set the Target Date String",
+      "goal": "Define a variable `date_str` with a future date in `YYYY-MM-DD` format",
+      "instructions": [
+        "At the top of your script, create `date_str = '2025-12-31'`",
+        "Print `date_str` to verify its value"
+      ],
+      "starterCode": "# Step 1: Set the target date string\n\ndate_str = ''  # e.g. '2025-12-31'\nprint('Date string:', date_str)",
+      "solutionCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)",
+      "expectedOutput": "Date string: 2025-12-31"
+    },
+    {
+      "id": "step-2",
+      "title": "Write a Parse Function",
+      "goal": "Create `parse_date(s)` that returns a `datetime` object or raises `ValueError`",
+      "instructions": [
+        "Import `datetime`",
+        "Define `def parse_date(s):`",
+        "Inside, return `datetime.strptime(s, '%Y-%m-%d')`",
+        "Test `parse_date(date_str)` and print the result"
+      ],
+      "starterCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)\n\n# Step 2: Write a parse function\n\nfrom datetime import datetime\n\ndef parse_date(s):\n    # TODO: parse YYYY-MM-DD\n    return None\n\nparsed = parse_date(date_str)\nprint('Parsed:', parsed)",
+      "solutionCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)\n\n# Step 2: Write a parse function\n\nfrom datetime import datetime\n\ndef parse_date(s):\n    return datetime.strptime(s, '%Y-%m-%d')\n\nparsed = parse_date(date_str)\nprint('Parsed:', parsed)",
+      "expectedOutput": "Date string: 2025-12-31\nParsed: 2025-12-31 00:00:00"
+    },
+    {
+      "id": "step-3",
+      "title": "Extend to MM/DD/YYYY",
+      "goal": "Enhance `parse_date` to accept `MM/DD/YYYY` as well",
+      "instructions": [
+        "In `parse_date`, try first `'%Y-%m-%d'`",
+        "On `ValueError`, try `'%m/%d/%Y'`",
+        "Re-raise if both fail",
+        "Test with `date_str = '12/31/2025'`"
+      ],
+      "starterCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)\n\n# Step 2: Write a parse function\n\nfrom datetime import datetime\n\ndef parse_date(s):\n    return datetime.strptime(s, '%Y-%m-%d')\n\nparsed = parse_date(date_str)\nprint('Parsed:', parsed)\n\n# Step 3: Support multiple formats\n\n# TODO: Modify parse_date to handle both formats\n# Test both formats:\ndate_str = '12/31/2025'\nprint('Testing MM/DD/YYYY:', parse_date(date_str))",
+      "solutionCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)\n\n# Step 2: Write a parse function\n\nfrom datetime import datetime\n\ndef parse_date(s):\n    try:\n        return datetime.strptime(s, '%Y-%m-%d')\n    except ValueError:\n        return datetime.strptime(s, '%m/%d/%Y')\n\nparsed = parse_date(date_str)\nprint('Parsed:', parsed)\n\n# Step 3: Support multiple formats\n\n# Test both formats:\ndate_str = '12/31/2025'\nprint('Testing MM/DD/YYYY:', parse_date(date_str))",
+      "expectedOutput": "Date string: 2025-12-31\nParsed: 2025-12-31 00:00:00\nTesting MM/DD/YYYY: 2025-12-31 00:00:00"
+    },
+    {
+      "id": "step-4",
+      "title": "Compute Days Difference",
+      "goal": "Subtract today’s date from the target to get a day count",
+      "instructions": [
+        "Get `today = datetime.now()`",
+        "Compute `delta = target.date() - today.date()`",
+        "Extract `days = delta.days`",
+        "Print `Days until event: {days}`"
+      ],
+      "starterCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)\n\n# Step 2: Write a parse function\n\nfrom datetime import datetime\n\ndef parse_date(s):\n    try:\n        return datetime.strptime(s, '%Y-%m-%d')\n    except ValueError:\n        return datetime.strptime(s, '%m/%d/%Y')\n\nparsed = parse_date(date_str)\nprint('Parsed:', parsed)\n\n# Step 3: Support multiple formats\n\n# Test both formats:\ndate_str = '12/31/2025'\nprint('Testing MM/DD/YYYY:', parse_date(date_str))\n\n# Step 4: Compute difference\n\ntarget = parse_date(date_str)\ntoday = None  # TODO: get current date\n# TODO: compute delta and days\nprint(f'Days until event: {None}')",
+      "solutionCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)\n\n# Step 2: Write a parse function\n\nfrom datetime import datetime\n\ndef parse_date(s):\n    try:\n        return datetime.strptime(s, '%Y-%m-%d')\n    except ValueError:\n        return datetime.strptime(s, '%m/%d/%Y')\n\nparsed = parse_date(date_str)\nprint('Parsed:', parsed)\n\n# Step 3: Support multiple formats\n\n# Test both formats:\ndate_str = '12/31/2025'\nprint('Testing MM/DD/YYYY:', parse_date(date_str))\n\n# Step 4: Compute difference\n\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\nprint(f'Days until event: {days}')",
+      "expectedOutput": "Date string: 2025-12-31\nParsed: 2025-12-31 00:00:00\nTesting MM/DD/YYYY: 2025-12-31 00:00:00\nDays until event: 174"
+    },
+    {
+      "id": "step-5",
+      "title": "Handle Past Dates",
+      "goal": "If the target is in the past, inform the user",
+      "instructions": [
+        "After computing `days`, check `if days < 0`",
+        "If true, print “Date has already passed!” and stop",
+        "Else continue normally"
+      ],
+      "starterCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)\n\n# Step 2: Write a parse function\n\nfrom datetime import datetime\n\ndef parse_date(s):\n    try:\n        return datetime.strptime(s, '%Y-%m-%d')\n    except ValueError:\n        return datetime.strptime(s, '%m/%d/%Y')\n\nparsed = parse_date(date_str)\nprint('Parsed:', parsed)\n\n# Step 3: Support multiple formats\n\n# Test both formats:\ndate_str = '12/31/2025'\nprint('Testing MM/DD/YYYY:', parse_date(date_str))\n\n# Step 4: Compute difference\n\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\nprint(f'Days until event: {days}')\n\n# Step 5: Handle past dates\n\n# Test with a past date\ndate_str = '2020-01-01'\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\n\n# TODO: Add conditional logic for past dates\nif None < 0:\n    print('Date has already passed!')\nelse:\n    print(f'Days until event: {days}')",
+      "solutionCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)\n\n# Step 2: Write a parse function\n\nfrom datetime import datetime\n\ndef parse_date(s):\n    try:\n        return datetime.strptime(s, '%Y-%m-%d')\n    except ValueError:\n        return datetime.strptime(s, '%m/%d/%Y')\n\nparsed = parse_date(date_str)\nprint('Parsed:', parsed)\n\n# Step 3: Support multiple formats\n\n# Test both formats:\ndate_str = '12/31/2025'\nprint('Testing MM/DD/YYYY:', parse_date(date_str))\n\n# Step 4: Compute difference\n\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\nprint(f'Days until event: {days}')\n\n# Step 5: Handle past dates\n\n# Test with a past date\ndate_str = '2020-01-01'\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\n\nif days < 0:\n    print('Date has already passed!')\nelse:\n    print(f'Days until event: {days}')",
+      "expectedOutput": "Date string: 2025-12-31\nParsed: 2025-12-31 00:00:00\nTesting MM/DD/YYYY: 2025-12-31 00:00:00\nDays until event: 174\nDate has already passed!"
+    },
+    {
+      "id": "step-6",
+      "title": "Add Birthday Mode",
+      "goal": "Celebrate if `days == 0` with an emoji",
+      "instructions": [
+        "Before past-date check, add `if days == 0:`",
+        "Print “Happy event! 🎉” in that case",
+        "Otherwise fall through to past/future logic"
+      ],
+      "starterCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)\n\n# Step 2: Write a parse function\n\nfrom datetime import datetime\n\ndef parse_date(s):\n    try:\n        return datetime.strptime(s, '%Y-%m-%d')\n    except ValueError:\n        return datetime.strptime(s, '%m/%d/%Y')\n\nparsed = parse_date(date_str)\nprint('Parsed:', parsed)\n\n# Step 3: Support multiple formats\n\n# Test both formats:\ndate_str = '12/31/2025'\nprint('Testing MM/DD/YYYY:', parse_date(date_str))\n\n# Step 4: Compute difference\n\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\nprint(f'Days until event: {days}')\n\n# Step 5: Handle past dates\n\n# Test with a past date\ndate_str = '2020-01-01'\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\n\nif days < 0:\n    print('Date has already passed!')\nelse:\n    print(f'Days until event: {days}')\n\n# Step 6: Birthday mode\n\n# Test with today's date (modify as needed)\nfrom datetime import datetime\ntoday_str = datetime.now().strftime('%Y-%m-%d')\nprint(f'Testing today ({today_str}):')\ntarget = parse_date(today_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\n\n# TODO: Add special case for days == 0\nif None == 0:\n    print('Happy event! 🎉')\nelif days < 0:\n    print('Date has already passed!')\nelse:\n    print(f'Days until event: {days}')",
+      "solutionCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)\n\n# Step 2: Write a parse function\n\nfrom datetime import datetime\n\ndef parse_date(s):\n    try:\n        return datetime.strptime(s, '%Y-%m-%d')\n    except ValueError:\n        return datetime.strptime(s, '%m/%d/%Y')\n\nparsed = parse_date(date_str)\nprint('Parsed:', parsed)\n\n# Step 3: Support multiple formats\n\n# Test both formats:\ndate_str = '12/31/2025'\nprint('Testing MM/DD/YYYY:', parse_date(date_str))\n\n# Step 4: Compute difference\n\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\nprint(f'Days until event: {days}')\n\n# Step 5: Handle past dates\n\n# Test with a past date\ndate_str = '2020-01-01'\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\n\nif days < 0:\n    print('Date has already passed!')\nelse:\n    print(f'Days until event: {days}')\n\n# Step 6: Birthday mode\n\n# Test with today's date (modify as needed)\nfrom datetime import datetime\ntoday_str = datetime.now().strftime('%Y-%m-%d')\nprint(f'Testing today ({today_str}):')\ntarget = parse_date(today_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\n\nif days == 0:\n    print('Happy event! 🎉')\nelif days < 0:\n    print('Date has already passed!')\nelse:\n    print(f'Days until event: {days}')",
+      "expectedOutput": "Date string: 2025-12-31\nParsed: 2025-12-31 00:00:00\nTesting MM/DD/YYYY: 2025-12-31 00:00:00\nDays until event: 174\nDate has already passed!\nTesting today (2025-01-10):\nHappy event! 🎉"
+    },
+    {
+      "id": "step-7",
+      "title": "Wrap in Function & Test",
+      "goal": "Encapsulate all logic into `days_until(s)` and test multiple cases",
+      "instructions": [
+        "Define `def days_until(s):` that returns or prints the correct message",
+        "Call `days_until` with past, today, and future dates",
+        "Verify all branches (`<0`, `==0`, `>0`) work"
+      ],
+      "starterCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)\n\n# Step 2: Write a parse function\n\nfrom datetime import datetime\n\ndef parse_date(s):\n    try:\n        return datetime.strptime(s, '%Y-%m-%d')\n    except ValueError:\n        return datetime.strptime(s, '%m/%d/%Y')\n\nparsed = parse_date(date_str)\nprint('Parsed:', parsed)\n\n# Step 3: Support multiple formats\n\n# Test both formats:\ndate_str = '12/31/2025'\nprint('Testing MM/DD/YYYY:', parse_date(date_str))\n\n# Step 4: Compute difference\n\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\nprint(f'Days until event: {days}')\n\n# Step 5: Handle past dates\n\n# Test with a past date\ndate_str = '2020-01-01'\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\n\nif days < 0:\n    print('Date has already passed!')\nelse:\n    print(f'Days until event: {days}')\n\n# Step 6: Birthday mode\n\n# Test with today's date (modify as needed)\nfrom datetime import datetime\ntoday_str = datetime.now().strftime('%Y-%m-%d')\nprint(f'Testing today ({today_str}):')\ntarget = parse_date(today_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\n\nif days == 0:\n    print('Happy event! 🎉')\nelif days < 0:\n    print('Date has already passed!')\nelse:\n    print(f'Days until event: {days}')\n\n# Step 7: Wrap in function\n\ndef days_until(s):\n    # TODO: Copy your full logic here\n    pass\n\n# Tests:\nprint('\\nTesting with function:')\nfor test in ['2025-12-31', '07/10/2025', '2020-01-01']:\n    days_until(test)",
+      "solutionCode": "# Step 1: Set the target date string\n\ndate_str = '2025-12-31'\nprint('Date string:', date_str)\n\n# Step 2: Write a parse function\n\nfrom datetime import datetime\n\ndef parse_date(s):\n    try:\n        return datetime.strptime(s, '%Y-%m-%d')\n    except ValueError:\n        return datetime.strptime(s, '%m/%d/%Y')\n\nparsed = parse_date(date_str)\nprint('Parsed:', parsed)\n\n# Step 3: Support multiple formats\n\n# Test both formats:\ndate_str = '12/31/2025'\nprint('Testing MM/DD/YYYY:', parse_date(date_str))\n\n# Step 4: Compute difference\n\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\nprint(f'Days until event: {days}')\n\n# Step 5: Handle past dates\n\n# Test with a past date\ndate_str = '2020-01-01'\ntarget = parse_date(date_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\n\nif days < 0:\n    print('Date has already passed!')\nelse:\n    print(f'Days until event: {days}')\n\n# Step 6: Birthday mode\n\n# Test with today's date (modify as needed)\nfrom datetime import datetime\ntoday_str = datetime.now().strftime('%Y-%m-%d')\nprint(f'Testing today ({today_str}):')\ntarget = parse_date(today_str)\ntoday = datetime.now()\ndelta = target.date() - today.date()\ndays = delta.days\n\nif days == 0:\n    print('Happy event! 🎉')\nelif days < 0:\n    print('Date has already passed!')\nelse:\n    print(f'Days until event: {days}')\n\n# Step 7: Wrap in function\n\ndef days_until(s):\n    try:\n        target = parse_date(s)\n    except ValueError:\n        print('Invalid format. Use YYYY-MM-DD or MM/DD/YYYY.')\n        return\n    delta = target.date() - datetime.now().date()\n    days = delta.days\n    if days == 0:\n        print('Happy event! 🎉')\n    elif days < 0:\n        print('Date has already passed!')\n    else:\n        print(f'Days until event: {days}')\n\n# Tests:\nprint('\\nTesting with function:')\nfor test in ['2025-12-31', '07/10/2025', '2020-01-01']:\n    days_until(test)",
+      "expectedOutput": "Date string: 2025-12-31\nParsed: 2025-12-31 00:00:00\nTesting MM/DD/YYYY: 2025-12-31 00:00:00\nDays until event: 174\nDate has already passed!\nTesting today (2025-01-10):\nHappy event! 🎉\n\nTesting with function:\nDays until event: 174\nHappy event! 🎉\nDate has already passed!"
+    }
+  ]
+}

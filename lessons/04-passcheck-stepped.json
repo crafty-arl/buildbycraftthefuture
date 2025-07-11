@@ -1,0 +1,115 @@
+{
+  "id": "passcheck-stepped",
+  "title": "🔐 PassCheck",
+  "difficulty": "Beginner",
+  "time": "25 minutes",
+  "track": "Python",
+  "overview": "Build an in-browser tool that scores password strength (0–10) and explains why. You’ll work with strings, loops, conditionals, and functions—no `input()`, just variables you can change and re-run.",
+  "xp": 120,
+  "concepts": [
+    "String length and indexing",
+    "Character classes (`isupper`, `isdigit`)",
+    "Loops and conditionals",
+    "Scoring systems",
+    "Function design",
+    "Clear output formatting"
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Set Your Test Password",
+      "goal": "Define a variable `password` for testing",
+      "instructions": [
+        "At the top, create `password = 'MyPass123!'`",
+        "Print `password` to confirm"
+      ],
+      "starterCode": "# Step 1: Set your test password\n\npassword = ''  # e.g. 'MyPass123!'\nprint('Password to check:', password)",
+      "solutionCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)",
+      "expectedOutput": "Password to check: MyPass123!"
+    },
+    {
+      "id": "step-2",
+      "title": "Length-Based Score",
+      "goal": "Give 0–4 points based on password length",
+      "instructions": [
+        "Create `score = 0`",
+        "If `len(password) >= 8`, add 2 points",
+        "If `len(password) >= 12`, add 2 more points",
+        "Print current `score`"
+      ],
+      "starterCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)\n\n# Step 2: Length-based scoring\n\nscore = 0\nlength = len(password)\n# TODO: update score for length\nprint('Score after length check:', score)",
+      "solutionCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)\n\n# Step 2: Length-based scoring\n\nscore = 0\nlength = len(password)\nif length >= 8:\n    score += 2\nif length >= 12:\n    score += 2\nprint('Score after length check:', score)",
+      "expectedOutput": "Password to check: MyPass123!\nScore after length check: 2"
+    },
+    {
+      "id": "step-3",
+      "title": "Uppercase & Lowercase",
+      "goal": "Add points if password contains both uppercase and lowercase letters",
+      "instructions": [
+        "Check `any(c.isupper() for c in password)`",
+        "Check `any(c.islower() for c in password)`",
+        "If both true, add 2 points",
+        "Print updated `score`"
+      ],
+      "starterCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)\n\n# Step 2: Length-based scoring\n\nscore = 0\nlength = len(password)\nif length >= 8:\n    score += 2\nif length >= 12:\n    score += 2\nprint('Score after length check:', score)\n\n# Step 3: Case variety\n\n# TODO: detect uppercase+lowercase and update score\nprint('Score after case check:', score)",
+      "solutionCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)\n\n# Step 2: Length-based scoring\n\nscore = 0\nlength = len(password)\nif length >= 8:\n    score += 2\nif length >= 12:\n    score += 2\nprint('Score after length check:', score)\n\n# Step 3: Case variety\n\nif any(c.isupper() for c in password) and any(c.islower() for c in password):\n    score += 2\nprint('Score after case check:', score)",
+      "expectedOutput": "Password to check: MyPass123!\nScore after length check: 2\nScore after case check: 4"
+    },
+    {
+      "id": "step-4",
+      "title": "Digit Check",
+      "goal": "Add points if password includes digits",
+      "instructions": [
+        "Check `any(c.isdigit() for c in password)`",
+        "If true, add 1 point",
+        "Print updated `score`"
+      ],
+      "starterCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)\n\n# Step 2: Length-based scoring\n\nscore = 0\nlength = len(password)\nif length >= 8:\n    score += 2\nif length >= 12:\n    score += 2\nprint('Score after length check:', score)\n\n# Step 3: Case variety\n\nif any(c.isupper() for c in password) and any(c.islower() for c in password):\n    score += 2\nprint('Score after case check:', score)\n\n# Step 4: Digit check\n\n# TODO: detect digits and update score\nprint('Score after digit check:', score)",
+      "solutionCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)\n\n# Step 2: Length-based scoring\n\nscore = 0\nlength = len(password)\nif length >= 8:\n    score += 2\nif length >= 12:\n    score += 2\nprint('Score after length check:', score)\n\n# Step 3: Case variety\n\nif any(c.isupper() for c in password) and any(c.islower() for c in password):\n    score += 2\nprint('Score after case check:', score)\n\n# Step 4: Digit check\n\nif any(c.isdigit() for c in password):\n    score += 1\nprint('Score after digit check:', score)",
+      "expectedOutput": "Password to check: MyPass123!\nScore after length check: 2\nScore after case check: 4\nScore after digit check: 5"
+    },
+    {
+      "id": "step-5",
+      "title": "Special Character Check",
+      "goal": "Add points if password includes special characters",
+      "instructions": [
+        "Define `specials = '!@#$%^&*()-_+='`",
+        "Check `any(c in specials for c in password)`",
+        "If true, add 1 point",
+        "Print updated `score`"
+      ],
+      "starterCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)\n\n# Step 2: Length-based scoring\n\nscore = 0\nlength = len(password)\nif length >= 8:\n    score += 2\nif length >= 12:\n    score += 2\nprint('Score after length check:', score)\n\n# Step 3: Case variety\n\nif any(c.isupper() for c in password) and any(c.islower() for c in password):\n    score += 2\nprint('Score after case check:', score)\n\n# Step 4: Digit check\n\nif any(c.isdigit() for c in password):\n    score += 1\nprint('Score after digit check:', score)\n\n# Step 5: Special characters\n\nspecials = ''  # TODO: define special characters\n# TODO: detect specials and update score\nprint('Score after special check:', score)",
+      "solutionCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)\n\n# Step 2: Length-based scoring\n\nscore = 0\nlength = len(password)\nif length >= 8:\n    score += 2\nif length >= 12:\n    score += 2\nprint('Score after length check:', score)\n\n# Step 3: Case variety\n\nif any(c.isupper() for c in password) and any(c.islower() for c in password):\n    score += 2\nprint('Score after case check:', score)\n\n# Step 4: Digit check\n\nif any(c.isdigit() for c in password):\n    score += 1\nprint('Score after digit check:', score)\n\n# Step 5: Special characters\n\nspecials = '!@#$%^&*()-_+='  \nif any(c in specials for c in password):\n    score += 1\nprint('Score after special check:', score)",
+      "expectedOutput": "Password to check: MyPass123!\nScore after length check: 2\nScore after case check: 4\nScore after digit check: 5\nScore after special check: 6"
+    },
+    {
+      "id": "step-6",
+      "title": "Cap the Score & Feedback",
+      "goal": "Ensure score ≤ 10 and print a feedback message",
+      "instructions": [
+        "Use `score = min(score, 10)`",
+        "If `score < 4`, feedback = 'Weak'",
+        "If `score < 7`, feedback = 'Medium'",
+        "Else feedback = 'Strong'",
+        "Print `Final score: {score} ({feedback})`"
+      ],
+      "starterCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)\n\n# Step 2: Length-based scoring\n\nscore = 0\nlength = len(password)\nif length >= 8:\n    score += 2\nif length >= 12:\n    score += 2\nprint('Score after length check:', score)\n\n# Step 3: Case variety\n\nif any(c.isupper() for c in password) and any(c.islower() for c in password):\n    score += 2\nprint('Score after case check:', score)\n\n# Step 4: Digit check\n\nif any(c.isdigit() for c in password):\n    score += 1\nprint('Score after digit check:', score)\n\n# Step 5: Special characters\n\nspecials = '!@#$%^&*()-_+='  \nif any(c in specials for c in password):\n    score += 1\nprint('Score after special check:', score)\n\n# Step 6: Cap & feedback\n\n# TODO: cap score and choose feedback category\nprint('Final score:', score)",
+      "solutionCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)\n\n# Step 2: Length-based scoring\n\nscore = 0\nlength = len(password)\nif length >= 8:\n    score += 2\nif length >= 12:\n    score += 2\nprint('Score after length check:', score)\n\n# Step 3: Case variety\n\nif any(c.isupper() for c in password) and any(c.islower() for c in password):\n    score += 2\nprint('Score after case check:', score)\n\n# Step 4: Digit check\n\nif any(c.isdigit() for c in password):\n    score += 1\nprint('Score after digit check:', score)\n\n# Step 5: Special characters\n\nspecials = '!@#$%^&*()-_+='  \nif any(c in specials for c in password):\n    score += 1\nprint('Score after special check:', score)\n\n# Step 6: Cap & feedback\n\nscore = min(score, 10)\nif score < 4:\n    feedback = 'Weak'\nelif score < 7:\n    feedback = 'Medium'\nelse:\n    feedback = 'Strong'\nprint(f'Final score: {score} ({feedback})')",
+      "expectedOutput": "Password to check: MyPass123!\nScore after length check: 2\nScore after case check: 4\nScore after digit check: 5\nScore after special check: 6\nFinal score: 6 (Medium)"
+    },
+    {
+      "id": "step-7",
+      "title": "Wrap in `check_password` Function",
+      "goal": "Encapsulate all logic into `check_password(pw)` and test on multiple samples",
+      "instructions": [
+        "Define `def check_password(pw):`",
+        "Copy all scoring code, replacing `password` with `pw`",
+        "Return or print final result string",
+        "Call `check_password` on at least three different `pw` values"
+      ],
+      "starterCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)\n\n# Step 2: Length-based scoring\n\nscore = 0\nlength = len(password)\nif length >= 8:\n    score += 2\nif length >= 12:\n    score += 2\nprint('Score after length check:', score)\n\n# Step 3: Case variety\n\nif any(c.isupper() for c in password) and any(c.islower() for c in password):\n    score += 2\nprint('Score after case check:', score)\n\n# Step 4: Digit check\n\nif any(c.isdigit() for c in password):\n    score += 1\nprint('Score after digit check:', score)\n\n# Step 5: Special characters\n\nspecials = '!@#$%^&*()-_+='  \nif any(c in specials for c in password):\n    score += 1\nprint('Score after special check:', score)\n\n# Step 6: Cap & feedback\n\nscore = min(score, 10)\nif score < 4:\n    feedback = 'Weak'\nelif score < 7:\n    feedback = 'Medium'\nelse:\n    feedback = 'Strong'\nprint(f'Final score: {score} ({feedback})')\n\n# Step 7: Wrap in function\n\ndef check_password(pw):\n    # TODO: Copy all your scoring logic here\n    pass\n\n# Test cases:\nprint('\\nTesting multiple passwords:')\ntests = ['short', 'OnlyLetters', 'Str0ng!Pass123']\nfor t in tests:\n    check_password(t)",
+      "solutionCode": "# Step 1: Set your test password\n\npassword = 'MyPass123!'\nprint('Password to check:', password)\n\n# Step 2: Length-based scoring\n\nscore = 0\nlength = len(password)\nif length >= 8:\n    score += 2\nif length >= 12:\n    score += 2\nprint('Score after length check:', score)\n\n# Step 3: Case variety\n\nif any(c.isupper() for c in password) and any(c.islower() for c in password):\n    score += 2\nprint('Score after case check:', score)\n\n# Step 4: Digit check\n\nif any(c.isdigit() for c in password):\n    score += 1\nprint('Score after digit check:', score)\n\n# Step 5: Special characters\n\nspecials = '!@#$%^&*()-_+='  \nif any(c in specials for c in password):\n    score += 1\nprint('Score after special check:', score)\n\n# Step 6: Cap & feedback\n\nscore = min(score, 10)\nif score < 4:\n    feedback = 'Weak'\nelif score < 7:\n    feedback = 'Medium'\nelse:\n    feedback = 'Strong'\nprint(f'Final score: {score} ({feedback})')\n\n# Step 7: Wrap in function\n\ndef check_password(pw):\n    score = 0\n    length = len(pw)\n    if length >= 8:\n        score += 2\n    if length >= 12:\n        score += 2\n    if any(c.isupper() for c in pw) and any(c.islower() for c in pw):\n        score += 2\n    if any(c.isdigit() for c in pw):\n        score += 1\n    specials = '!@#$%^&*()-_+='  \n    if any(c in specials for c in pw):\n        score += 1\n    score = min(score, 10)\n    if score < 4:\n        feedback = 'Weak'\n    elif score < 7:\n        feedback = 'Medium'\n    else:\n        feedback = 'Strong'\n    print(f\"Password: {pw} → {score} ({feedback})\")\n\n# Test cases:\nprint('\\nTesting multiple passwords:')\ntests = ['short', 'OnlyLetters', 'Str0ng!Pass123']\nfor t in tests:\n    check_password(t)",
+      "expectedOutput": "Password to check: MyPass123!\nScore after length check: 2\nScore after case check: 4\nScore after digit check: 5\nScore after special check: 6\nFinal score: 6 (Medium)\n\nTesting multiple passwords:\nPassword: short → 0 (Weak)\nPassword: OnlyLetters → 4 (Medium)\nPassword: Str0ng!Pass123 → 8 (Strong)"
+    }
+  ]
+}

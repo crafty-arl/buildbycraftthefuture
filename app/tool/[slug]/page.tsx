@@ -313,11 +313,11 @@ _stdout_buffer.getvalue()
     
     if (isComplete) {
       const newCompletedSteps = [...progress.completedSteps, currentStep.id]
-      saveProgress(newCompletedSteps, newCompletedSteps.length === tool.steppedLesson.steps.length)
+      saveProgress(newCompletedSteps, newCompletedSteps.length === (tool.steppedLesson?.steps?.length || 0))
       setOutput(prev => prev + '\n\n✅ Step completed! Great work!')
 
       // Check if all steps are completed
-      if (newCompletedSteps.length === tool.steppedLesson.steps.length && !hasClaimedRef.current) {
+      if (newCompletedSteps.length === (tool.steppedLesson?.steps?.length || 0) && !hasClaimedRef.current) {
         setShowCompletionPopup(true)
       }
     }
@@ -375,7 +375,7 @@ _stdout_buffer.getvalue()
   }
 
   const nextStep = () => {
-    if (!tool?.steppedLesson || currentStepIndex >= tool.steppedLesson.steps.length - 1) return
+    if (!tool?.steppedLesson?.steps || currentStepIndex >= tool.steppedLesson.steps.length - 1) return
     
     const nextIndex = currentStepIndex + 1
     setCurrentStepIndex(nextIndex)

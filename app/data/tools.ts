@@ -68,6 +68,121 @@ export const tools: SimpleTool[] = [
         description: "Multiple items receipt"
       }
     ]
+  },
+  {
+    id: 'namemixer-stepped',
+    slug: 'namemixer',
+    title: '🔤 NameMixer',
+    description: 'Build a simple word-mixing tool that sparks creative names for products, projects, or any idea. Learn to work with lists, random selection, and string concatenation — all in your browser with pure Python.',
+    track: 'python',
+    difficulty: 'Beginner',
+    estimatedTime: '15 min',
+    order: 2,
+    lessonType: 'stepped',
+    
+    // Load the stepped lesson dynamically
+    steppedLesson: undefined, // Will be loaded asynchronously
+    
+    concepts: [
+      'Lists and indexing',
+      'Random selection',
+      'String concatenation',
+      'Function design',
+      'In-memory state'
+    ],
+    testCases: [
+      {
+        input: ["Quantum", "Cozy", "Bold"],
+        expectedOutput: "Should generate random combinations like 'Quantum Bot' or 'Cozy Frame'",
+        description: "Random name generation"
+      },
+      {
+        input: 3,
+        expectedOutput: "Should generate 3 different mixed names",
+        description: "Multiple name generation"
+      }
+    ]
+  },
+  {
+    id: 'dategapfinder-stepped',
+    slug: 'dategapfinder',
+    title: '📆 DateGap Finder',
+    description: 'Build an in-browser Python tool that tells you how many days remain until a future date. Perfect for countdowns, birthdays, or deadlines. You\'ll work with strings, `datetime`, error handling, and flexible parsing—no `input()`, just variables you can change and re-run.',
+    track: 'python',
+    difficulty: 'Beginner',
+    estimatedTime: '25 min',
+    order: 3,
+    lessonType: 'stepped',
+    
+    // Load the stepped lesson dynamically
+    steppedLesson: undefined, // Will be loaded asynchronously
+    
+    concepts: [
+      'Working with string variables',
+      '`datetime.strptime` and multiple formats',
+      'Date arithmetic',
+      'Error handling with `try/except`',
+      'Conditional logic',
+      'Function design',
+      'Clear output formatting'
+    ],
+    testCases: [
+      {
+        input: '2025-12-31',
+        expectedOutput: "Should show days until event",
+        description: "Future date countdown"
+      },
+      {
+        input: '2020-01-01',
+        expectedOutput: "Should show 'Date has already passed!'",
+        description: "Past date handling"
+      },
+      {
+        input: '07/10/2025',
+        expectedOutput: "Should handle MM/DD/YYYY format",
+        description: "Alternative date format"
+      }
+    ]
+  },
+  {
+    id: 'passcheck-stepped',
+    slug: 'passcheck',
+    title: '🔐 PassCheck',
+    description: 'Build an in-browser tool that scores password strength (0–10) and explains why. You\'ll work with strings, loops, conditionals, and functions—no `input()`, just variables you can change and re-run.',
+    track: 'python',
+    difficulty: 'Beginner',
+    estimatedTime: '25 min',
+    order: 4,
+    lessonType: 'stepped',
+    
+    // Load the stepped lesson dynamically
+    steppedLesson: undefined, // Will be loaded asynchronously
+    
+    concepts: [
+      'String length and indexing',
+      'Character classes (`isupper`, `isdigit`)',
+      'Loops and conditionals',
+      'Scoring systems',
+      'Function design',
+      'Clear output formatting'
+    ],
+    testCases: [
+      {
+        input: 'MyPass123!',
+        expectedOutput: "Should score 6 (Medium)",
+        description: "Mixed case with digits and special chars"
+      },
+      {
+        input: 'short',
+        expectedOutput: "Should score 0 (Weak)",
+        description: "Short password"
+      },
+      {
+        input: 'Str0ng!Pass123',
+        expectedOutput: "Should score 8 (Strong)",
+        description: "Long, complex password"
+      }
+    ]
   }
 ]
 
@@ -88,23 +203,62 @@ export async function getToolWithSteps(slug: string): Promise<SimpleTool | undef
     console.log('🐛 Debug: Tool needs stepped lesson loading...')
     try {
       // Convert slug to the correct file name format
-      const lessonSlug = `01-${tool.slug}-stepped`
+      let lessonSlug
+      if (tool.slug === 'quickreceipt') {
+        lessonSlug = `01-${tool.slug}-stepped`
+      } else if (tool.slug === 'namemixer') {
+        lessonSlug = `02-${tool.slug}-stepped`
+      } else if (tool.slug === 'dategapfinder') {
+        lessonSlug = `03-${tool.slug}-stepped`
+      } else if (tool.slug === 'passcheck') {
+        lessonSlug = `04-${tool.slug}-stepped`
+      } else {
+        lessonSlug = `${tool.slug}-stepped`
+      }
+      
       console.log('🐛 Debug: Loading lesson with slug:', lessonSlug)
       
       // Try to load from JSON file first
-      const jsonResponse = await fetch(`/api/lesson-json/${lessonSlug}`)
+      const timestamp = Date.now()
+      const apiUrl = `/api/lesson-json/${lessonSlug}?t=${timestamp}&slug=${tool.slug}`
+      console.log('🐛 Debug: Making API request to:', apiUrl)
+      console.log('🐛 Debug: Requesting for tool slug:', tool.slug)
+      const jsonResponse = await fetch(apiUrl, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      })
       console.log('🐛 Debug: JSON API response status:', jsonResponse.status)
       
       if (jsonResponse.ok) {
         const jsonLesson = await jsonResponse.json()
         console.log('✅ Loaded lesson from JSON file')
+        console.log('🐛 Debug: JSON lesson ID:', jsonLesson.id)
         console.log('🐛 Debug: JSON lesson title:', jsonLesson.title)
         console.log('🐛 Debug: Steps count:', jsonLesson.steps?.length || 0)
+        console.log('🐛 Debug: First step title:', jsonLesson.steps?.[0]?.title || 'No first step')
+        console.log('🐛 Debug: First step ID:', jsonLesson.steps?.[0]?.id || 'No first step ID')
+        
+        // Verify we got the right lesson
+        const expectedLessonId = `${tool.slug}-stepped`
+        if (jsonLesson.id !== expectedLessonId) {
+          console.error(`❌ Wrong lesson loaded! Expected ${expectedLessonId}, got ${jsonLesson.id}`)
+          console.error(`❌ This might be a caching issue or wrong file being served`)
+        } else {
+          console.log(`✅ Correct lesson loaded: ${jsonLesson.id}`)
+        }
         
         const { parseJsonLesson } = await import('./lessonParser')
         tool.steppedLesson = parseJsonLesson(jsonLesson)
+        
+        console.log('🐛 Debug: Parsed lesson steps count:', tool.steppedLesson?.steps?.length || 0)
+        console.log('🐛 Debug: First parsed step title:', tool.steppedLesson?.steps?.[0]?.title || 'No first parsed step')
       } else {
-        console.error('❌ Failed to load JSON lesson')
+        console.error('❌ Failed to load JSON lesson - Status:', jsonResponse.status)
+        const errorText = await jsonResponse.text()
+        console.error('❌ Error response:', errorText)
       }
     } catch (error) {
       console.error(`❌ Failed to load stepped lesson for '${tool.slug}':`, error)
@@ -115,6 +269,9 @@ export async function getToolWithSteps(slug: string): Promise<SimpleTool | undef
   
   console.log('🐛 Debug: Final tool state - hasSteppedLesson:', !!tool.steppedLesson)
   console.log('🐛 Debug: Steps count:', tool.steppedLesson?.steps?.length || 0)
+  if (tool.steppedLesson?.steps && tool.steppedLesson.steps.length > 0) {
+    console.log('🐛 Debug: First step starter code length:', tool.steppedLesson.steps[0]?.starterCode?.length || 0)
+  }
   return tool
 }
 
